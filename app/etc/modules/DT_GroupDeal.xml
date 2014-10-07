@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <DT_GroupDeal>
+            <active>true</active>
+            <codePool>local</codePool>
+        </DT_GroupDeal>
+    </modules>
+</config>
