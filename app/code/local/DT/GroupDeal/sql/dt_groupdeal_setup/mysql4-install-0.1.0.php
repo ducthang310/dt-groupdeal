@@ -19,8 +19,6 @@ CREATE TABLE {$this->getTable('dt_group_deal')} (
   `group_deal_id` int(11) unsigned NOT NULL auto_increment,
   `product_id` int(11) NOT NULL,
   `group_deal_name` varchar(255) NOT NULL,
-  `tier_qty` decimal(12,4) NOT NULL,
-  `tier_price` decimal(12,4) NOT NULL,
   `deal_from_date` datetime NOT NULL,
   `deal_to_date` datetime NOT NULL,
   `deal_description` text NOT NULL,
@@ -29,5 +27,14 @@ CREATE TABLE {$this->getTable('dt_group_deal')} (
   PRIMARY KEY (`group_deal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
-
+$installer->run("
+-- DROP TABLE IF EXISTS {$this->getTable('dt_deal_tier_price')};
+CREATE TABLE {$this->getTable('dt_deal_tier_price')} (
+  `tier_id` int(11) unsigned NOT NULL auto_increment,
+  `group_deal_id` int(11) NOT NULL,
+  `tier_qty` decimal(12,4) NOT NULL,
+  `tier_price` decimal(12,4) NOT NULL,
+  PRIMARY KEY (`tier_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+");
 $installer->endSetup();

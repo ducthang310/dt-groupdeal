@@ -61,10 +61,34 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         );
     }
 
-    public function newAction(){
-        $this->loadLayout();
-        $this->_addContent($this->getLayout()->createBlock('form/adminhtml_form_edit'))
-            ->_addLeft($this->getLayout()->createBlock('form/adminhtml_form_edit_tabs'));
-        $this->renderLayout();
+    public function editAction() {
+        $id = $this->getRequest()->getParam('id');
+        $model = Mage::getModel('dt_groupdeal/deal')->load($id);
+
+        if ($model->getId() || $id == 0) {
+            $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
+            if (!empty($data)) {
+                $model->setData($data);
+            }
+
+            Mage::register('deal_data', $model);
+
+            $this->loadLayout();
+            $this->_setActiveMenu('dt_groupdeal/index');
+
+            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Deal Manager'), Mage::helper('adminhtml')->__('Deal Manager'));
+
+            $this->_addContent($this->getLayout()->createBlock('dt_groupdeal/adminhtml_deal_edit'));
+            $this->_addLeft($this->getLayout()->createBlock('dt_groupdeal/adminhtml_deal_edit_tabs'));
+
+            $this->renderLayout();
+        } else {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Deal does not exist'));
+            $this->_redirect('*/*/');
+        }
+    }
+
+    public function newAction() {
+        $this->_forward('edit');
     }
 }

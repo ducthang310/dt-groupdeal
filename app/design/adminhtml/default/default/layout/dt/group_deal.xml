@@ -5,4 +5,9 @@
             <block type="dt_groupdeal/adminhtml_deal" name="deal"/>
         </reference>
     </adminhtml_deal_index>
+    <adminhtml_deal_edit>
+        <reference name="head">
+            <action method="setTitle" translate="title"><title>Deal Edit</title></action>
+        </reference>
+    </adminhtml_deal_edit>
 </layout>
