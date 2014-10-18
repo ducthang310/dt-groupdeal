@@ -19,11 +19,12 @@ CREATE TABLE {$this->getTable('dt_group_deal')} (
   `group_deal_id` int(11) unsigned NOT NULL auto_increment,
   `product_id` int(11) NOT NULL,
   `group_deal_name` varchar(255) NOT NULL,
-  `deal_from_date` datetime NOT NULL,
-  `deal_to_date` datetime NOT NULL,
+  `is_active` boolean NOT NULL default 1,
+  `deal_from_date` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `deal_to_date` timestamp NOT NULL default '0000-00-00 00:00:00',
   `deal_description` text NOT NULL,
-  `created_at` datetime NOT NULL default '0000-00-00 00:00:00',
-  `updated_at` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_at` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY (`group_deal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");

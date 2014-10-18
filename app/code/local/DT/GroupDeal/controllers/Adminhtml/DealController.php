@@ -91,4 +91,34 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
     public function newAction() {
         $this->_forward('edit');
     }
+
+    public function saveAction() {
+        if ($postData = $this->getRequest()->getPost()) {
+            try {
+                $dealModel = Mage::getModel('dt_groupdeal/deal');
+                $dealModel->setId($this->getRequest()->getParam('id'))
+                    ->addData($postData)
+                    ->save();
+
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Group Deal was successfully saved'));
+                Mage::getSingleton('adminhtml/session')->setFormData(false);
+
+                if ($this->getRequest()->getParam('back')) {
+                    $this->_redirect('*/*/edit', array('id' => $dealModel->getId()));
+                    return;
+                }
+                $this->_redirect('*/*/');
+
+                return;
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                Mage::getSingleton('adminhtml/session')->setFormData($postData);
+                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+                return;
+            }
+        }
+        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Unable to find group deal to save'));
+        $this->_redirect('*/*/');
+
+    }
 }

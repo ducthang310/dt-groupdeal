@@ -17,6 +17,9 @@
                     <deal>
                         <table>dt_group_deal</table>
                     </deal>
+                    <tierprice>
+                        <table>dt_deal_tier_price</table>
+                    </tierprice>
                 </entities>
             </dt_groupdeal_resource>
         </models>
@@ -37,8 +40,39 @@
                 </setup>
             </dt_groupdeal_setup>
         </resources>
+
+        <events>
+            <catalog_product_type_configurable_price>
+                <observers>
+                    <dt_groupdeal>
+                        <class>dt_groupdeal/observer</class>
+                        <method>catalogProductTypeConfigurablePrice</method>
+                    </dt_groupdeal>
+                </observers>
+            </catalog_product_type_configurable_price>
+        </events>
     </global>
 
+    <frontend>
+        <events>
+            <catalog_product_get_final_price>
+                <observers>
+                    <dt_groupdeal>
+                        <class>dt_groupdeal/observer</class>
+                        <method>processFrontFinalPrice</method>
+                    </dt_groupdeal>
+                </observers>
+            </catalog_product_get_final_price>
+            <prepare_catalog_product_collection_prices>
+                <observers>
+                    <dt_groupdeal>
+                        <class>dt_groupdeal/observer</class>
+                        <method>prepareCatalogProductCollectionPrices</method>
+                    </dt_groupdeal>
+                </observers>
+            </prepare_catalog_product_collection_prices>
+        </events>
+    </frontend>
     <admin>
         <routers>
             <adminhtml>
@@ -68,5 +102,16 @@
                 </dt_groupdeal>
             </updates>
         </layout>
+
+        <events>
+            <catalog_product_get_final_price>
+                <observers>
+                    <dt_groupdeal>
+                        <class>dt_groupdeal/observer</class>
+                        <method>processAdminFinalPrice</method>
+                    </dt_groupdeal>
+                </observers>
+            </catalog_product_get_final_price>
+        </events>
     </adminhtml>
 </config>

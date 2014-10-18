@@ -1,0 +1,84 @@
+<?php $_htmlId      = $this->getElement()->getHtmlId() ?>
+<?php $_htmlClass   = $this->getElement()->getClass() ?>
+<?php $_htmlName    = $this->getElement()->getName() ?>
+<tr>
+    <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
+    <td colspan="10" class="grid tier dt_tier">
+        <table cellspacing="0" class="border" id="dt_tiers_table">
+            <col width="117" />
+            <col width="172" />
+            <col width="43" />
+
+            <thead>
+                <tr class="headings">
+                    <th><?php echo Mage::helper('dt_groupdeal')->__('Qty') ?></th>
+                    <th><?php echo Mage::helper('dt_groupdeal')->__('Price') ?></th>
+                    <th class="last"><?php echo Mage::helper('dt_groupdeal')->__('Action') ?></th>
+                </tr>
+            </thead>
+
+            <tbody id="<?php echo $_htmlId ?>_container"></tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="3" class="a-right"><?php echo $this->getAddButtonHtml() ?></td>
+            </tr>
+            </tfoot>
+        </table>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var tierPriceRowTemplate = '<tr>'
+            + '<td class="nobr"><input class="<?php echo $_htmlClass ?> dt_qty required-entry validate-greater-than-zero" type="text" name="<?php echo $_htmlName ?>[{{index}}][tier_qty]" value="{{qty}}" id="tier_price_row_{{index}}_qty" />'
+            + ' <small class="nobr"><?php echo Mage::helper('catalog')->__("and above")?></small></td>'
+            + '<td><input class="<?php echo $_htmlClass ?> dt_price required-entry" type="text" name="<?php echo $_htmlName ?>[{{index}}][tier_price]" value="{{price}}" id="tier_price_row_{{index}}_price" /></td>'
+            + '<td class="last">'
+            + '<input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="tier_price_row_{{index}}_delete" />'
+            + '<input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][tier_id]" class="id" value="{{id}}" id="tier_price_row_{{index}}_id" />'
+            + '<button title="<?php echo Mage::helper('catalog')->__("Delete Tier") ?>" type="button" class="scalable delete icon-btn delete-product-option" id="tier_price_row_{{index}}_delete_button" onclick="return tierPriceControl.deleteItem(event);">'
+            + '<span><span><span><?php echo Mage::helper('catalog')->__("Delete") ?></span></span></span></button></td>'
+            + '</tr>';
+
+    var tierPriceControl = {
+        template: new Template(tierPriceRowTemplate, new RegExp('(^|.|\\r|\\n)({{\\s*(\\w+)\\s*}})', "")),
+        itemsCount: 0,
+        addItem : function () {
+            var data = {
+                id: '',
+                qty: '',
+                price: '',
+                index: this.itemsCount++
+            };
+
+            if(arguments.length == 3) {
+                data.id        = arguments[0];
+                data.qty        = arguments[1];
+                data.price      = arguments[2];
+            }
+
+            Element.insert($('<?php echo $_htmlId ?>_container'), {
+                bottom : this.template.evaluate(data)
+            });
+        },
+        disableElement: function(el) {
+            el.disabled = true;
+            el.addClassName('disabled');
+        },
+        deleteItem: function(event) {
+            var tr = Event.findElement(event, 'tr');
+            if (tr) {
+                Element.select(tr, '.delete').each(function(elem){elem.value='1'});
+                Element.select(tr, ['input', 'select']).each(function(elem){elem.hide()});
+                Element.hide(tr);
+                Element.addClassName(tr, 'no-display template');
+            }
+            return false;
+        }
+    };
+    <?php foreach ($this->getValues() as $_item): ?>
+    tierPriceControl.addItem('<?php echo $_item['tier_id'] ?>', '<?php echo $_item['tier_qty']*1 ?>', '<?php echo sprintf('%.2f', $_item['tier_price']) ?>');
+    <?php endforeach; ?>
+    //]]>
+</script>
