@@ -1,0 +1,29 @@
+.dt-deal-item {
+    display: block;
+    height: 16px;
+    background-image: url(../../images/bg_notifications.gif);
+    background-repeat: no-repeat;
+    background-position: 0 -32px;
+    font: bold 10px/16px Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0 0 0 7px;
+    margin: 1px 0;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.dt-deal-item span {
+    display: block;
+    height: 16px;
+    background-image: url(../../images/bg_notifications.gif);
+    background-repeat: no-repeat;
+    background-position: 100% -32px;
+    padding: 0 7px 0 0;
+    font: bold 10px/16px Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 1px 0;
+    white-space: nowrap;
+    color: #fff;
+}

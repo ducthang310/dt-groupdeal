@@ -23,12 +23,9 @@ class DT_GroupDeal_Model_observer
         if ($product instanceof Mage_Catalog_Model_Product
             && $product->getConfigurablePrice() !== null
         ) {
-            $configurablePrice = $product->getConfigurablePrice();
-            $productPriceRule = Mage::getModel('catalogrule/rule')->calcProductPriceRule($product, $configurablePrice);
-            Mage::log('$configurablePrice : ' . $configurablePrice , null, 'dt_config_price.log');
-            Mage::log('$productPriceRule : ' . $productPriceRule , null, 'dt_config_price.log');
-            if ($productPriceRule !== null) {
-                $product->setConfigurablePrice($productPriceRule);
+            $flag = Mage::helper('dt_groupdeal')->checkDeal($product);
+            if ($flag) {
+//                $product->setConfigurablePrice(0);
             }
         }
 
@@ -45,40 +42,39 @@ class DT_GroupDeal_Model_observer
     public function processFrontFinalPrice($observer)
     {
         $product    = $observer->getEvent()->getProduct();
-        $pId        = $product->getId();
-        $storeId    = $product->getStoreId();
-
-        if ($observer->hasDate()) {
-            $date = $observer->getEvent()->getDate();
-        } else {
-            $date = Mage::app()->getLocale()->storeTimeStamp($storeId);
-        }
-
-        if ($observer->hasWebsiteId()) {
-            $wId = $observer->getEvent()->getWebsiteId();
-        } else {
-            $wId = Mage::app()->getStore($storeId)->getWebsiteId();
-        }
-
-        if ($observer->hasCustomerGroupId()) {
-            $gId = $observer->getEvent()->getCustomerGroupId();
-        } elseif ($product->hasCustomerGroupId()) {
-            $gId = $product->getCustomerGroupId();
-        } else {
-            $gId = Mage::getSingleton('customer/session')->getCustomerGroupId();
-        }
-
-        $key = "$date|$wId|$gId|$pId";
-        if (!isset($this->_rulePrices[$key])) {
-            $rulePrice = Mage::getResourceModel('catalogrule/rule')
-                ->getRulePrice($date, $wId, $gId, $pId);
-            $this->_rulePrices[$key] = $rulePrice;
-        }
-        if ($this->_rulePrices[$key]!==false) {
-            $finalPrice = min($product->getData('final_price'), $this->_rulePrices[$key]);
-            $product->setFinalPrice($finalPrice);
+        $flag = Mage::helper('dt_groupdeal')->checkDeal($product);
+        if ($flag) {
+            $product->setFinalPrice(2.5);
         }
         return $this;
+    }
+
+    public function saveIsDeal($observer) {
+        /** @var $quote Mage_Sales_Model_Quote */
+        $quote = $observer->getEvent()->getQuote();
+        try {
+            foreach ($quote->getAllVisibleItems() as $item) {
+                if ($item->getParentItem()) {
+                    continue;
+                }
+                $deal = Mage::helper('dt_groupdeal')->checkDeal($item->getProduct());
+                if ($item->getIsDeal() != $deal) {
+                    $item->setIsDeal($deal);
+                    if ($quote->getId()) {
+                        $item->save();
+                    }
+                }
+                if ($deal) {
+                    $message = array(
+                        'This product is in the Deal time',
+                        'The product\'s price will be calculated as soon as the Deal time is finished.'
+                    );
+                    $item->setMessage($message);
+                }
+            }
+        } catch (Exception $e) {
+            Mage::logException($e);
+        }
     }
 
     /**
@@ -91,80 +87,10 @@ class DT_GroupDeal_Model_observer
     public function processAdminFinalPrice($observer)
     {
         $product = $observer->getEvent()->getProduct();
-        $storeId = $product->getStoreId();
-        $date = Mage::app()->getLocale()->storeDate($storeId);
-        $key = false;
-
-        if ($ruleData = Mage::registry('rule_data')) {
-            $wId = $ruleData->getWebsiteId();
-            $gId = $ruleData->getCustomerGroupId();
-            $pId = $product->getId();
-
-            $key = "$date|$wId|$gId|$pId";
+        $flag = Mage::helper('dt_groupdeal')->checkDeal($product);
+        if ($flag) {
+            $product->setFinalPrice(0);
         }
-        elseif (!is_null($product->getWebsiteId()) && !is_null($product->getCustomerGroupId())) {
-            $wId = $product->getWebsiteId();
-            $gId = $product->getCustomerGroupId();
-            $pId = $product->getId();
-            $key = "$date|$wId|$gId|$pId";
-        }
-
-        if ($key) {
-            if (!isset($this->_rulePrices[$key])) {
-                $rulePrice = Mage::getResourceModel('catalogrule/rule')
-                    ->getRulePrice($date, $wId, $gId, $pId);
-                $this->_rulePrices[$key] = $rulePrice;
-            }
-            if ($this->_rulePrices[$key]!==false) {
-                $finalPrice = min($product->getData('final_price'), $this->_rulePrices[$key]);
-                $product->setFinalPrice($finalPrice);
-            }
-        }
-
-        return $this;
-    }
-
-    public function prepareCatalogProductCollectionPrices(Varien_Event_Observer $observer)
-    {
-        /* @var $collection Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection */
-        $collection = $observer->getEvent()->getCollection();
-        $store      = Mage::app()->getStore($observer->getEvent()->getStoreId());
-        $websiteId  = $store->getWebsiteId();
-        if ($observer->getEvent()->hasCustomerGroupId()) {
-            $groupId = $observer->getEvent()->getCustomerGroupId();
-        } else {
-            /* @var $session Mage_Customer_Model_Session */
-            $session = Mage::getSingleton('customer/session');
-            if ($session->isLoggedIn()) {
-                $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
-            } else {
-                $groupId = Mage_Customer_Model_Group::NOT_LOGGED_IN_ID;
-            }
-        }
-        if ($observer->getEvent()->hasDate()) {
-            $date = $observer->getEvent()->getDate();
-        } else {
-            $date = Mage::app()->getLocale()->storeTimeStamp($store);
-        }
-
-        $productIds = array();
-        /* @var $product Mage_Core_Model_Product */
-        foreach ($collection as $product) {
-            $key = implode('|', array($date, $websiteId, $groupId, $product->getId()));
-            if (!isset($this->_rulePrices[$key])) {
-                $productIds[] = $product->getId();
-            }
-        }
-
-        if ($productIds) {
-            $rulePrices = Mage::getResourceModel('catalogrule/rule')
-                ->getRulePrices($date, $websiteId, $groupId, $productIds);
-            foreach ($productIds as $productId) {
-                $key = implode('|', array($date, $websiteId, $groupId, $productId));
-                $this->_rulePrices[$key] = isset($rulePrices[$productId]) ? $rulePrices[$productId] : false;
-            }
-        }
-
         return $this;
     }
 }

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <DT_GroupDeal>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </DT_GroupDeal>
     </modules>
     <global>
@@ -51,6 +51,14 @@
                 </observers>
             </catalog_product_type_configurable_price>
         </events>
+
+        <fieldsets>
+            <sales_convert_quote_item>
+                <is_deal>
+                    <to_order_item>*</to_order_item>
+                </is_deal>
+            </sales_convert_quote_item>
+        </fieldsets>
     </global>
 
     <frontend>
@@ -63,6 +71,14 @@
                     </dt_groupdeal>
                 </observers>
             </catalog_product_get_final_price>
+            <sales_quote_collect_totals_after>
+                <observers>
+                    <dt_groupdeal>
+                        <class>dt_groupdeal/observer</class>
+                        <method>saveIsDeal</method>
+                    </dt_groupdeal>
+                </observers>
+            </sales_quote_collect_totals_after>
             <prepare_catalog_product_collection_prices>
                 <observers>
                     <dt_groupdeal>
@@ -72,6 +88,14 @@
                 </observers>
             </prepare_catalog_product_collection_prices>
         </events>
+
+        <layout>
+            <updates>
+                <dt_groupdeal>
+                    <file>dt/group_deal.xml</file>
+                </dt_groupdeal>
+            </updates>
+        </layout>
     </frontend>
     <admin>
         <routers>
