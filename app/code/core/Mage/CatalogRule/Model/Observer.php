@@ -186,8 +186,6 @@ class Mage_CatalogRule_Model_Observer
         ) {
             $configurablePrice = $product->getConfigurablePrice();
             $productPriceRule = Mage::getModel('catalogrule/rule')->calcProductPriceRule($product, $configurablePrice);
-            Mage::log('$configurablePrice : ' . $configurablePrice , null, 'dt_config_price.log');
-            Mage::log('$productPriceRule : ' . $productPriceRule , null, 'dt_config_price.log');
             if ($productPriceRule !== null) {
                 $product->setConfigurablePrice($productPriceRule);
             }
@@ -240,7 +238,7 @@ class Mage_CatalogRule_Model_Observer
 
         Mage::getSingleton('catalogrule/rule_product_price')
             ->applyPriceRuleToIndexTable($select, $indexTable, $entityId, $customerGroupId, $websiteId,
-                $updateFields, $websiteDate);
+            $updateFields, $websiteDate);
 
         return $this;
     }
