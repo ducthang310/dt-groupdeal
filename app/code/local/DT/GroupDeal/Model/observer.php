@@ -11,28 +11,6 @@
 class DT_GroupDeal_Model_observer
 {
     /**
-     * Calculate price using catalog price rules of configurable product
-     *
-     * @param Varien_Event_Observer $observer
-     *
-     * @return Mage_CatalogRule_Model_Observer
-     */
-    public function catalogProductTypeConfigurablePrice(Varien_Event_Observer $observer)
-    {
-        $product = $observer->getEvent()->getProduct();
-        if ($product instanceof Mage_Catalog_Model_Product
-            && $product->getConfigurablePrice() !== null
-        ) {
-            $flag = Mage::helper('dt_groupdeal')->checkDeal($product);
-            if ($flag) {
-//                $product->setConfigurablePrice(0);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Apply catalog price rules to product on frontend
      *
      * @param   Varien_Event_Observer $observer
@@ -89,7 +67,7 @@ class DT_GroupDeal_Model_observer
         $product = $observer->getEvent()->getProduct();
         $flag = Mage::helper('dt_groupdeal')->checkDeal($product);
         if ($flag) {
-            $product->setFinalPrice(0);
+            $product->setFinalPrice(2.5);
         }
         return $this;
     }

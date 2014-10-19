@@ -17,6 +17,10 @@
         <reference name="head">
             <action method="addCss"><stylesheet>css/dt/group_deal.css</stylesheet></action>
         </reference>
+        <reference name="product.info">
+            <action method="setTemplate"><template>dt/catalog/product/view.phtml</template></action>
+            <block type="dt_groupdeal/catalog_product_deal" name="product.info.deal" as="pro_deal" template="dt/catalog/product/deal.phtml"/>
+        </reference>
     </catalog_product_view>
 
     <checkout_cart_index>

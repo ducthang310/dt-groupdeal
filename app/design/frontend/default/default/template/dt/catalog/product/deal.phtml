@@ -1,0 +1,30 @@
+
+<?php if ($this->checkInDealTime()): ?>
+<?php
+    $_tiers = $this->getTierPrice();
+    $_currentPrice = Mage::helper('core')->currency($this->getProduct()->getPrice(),true,false);
+    $_currentQuantity = 10;
+    ?>
+<div class="product-pricing dt-deal-tier">
+    <div class="dt-deal-title">
+        <span class="dt-span-left"><?php echo $this->__('Current Price')?></span>
+        <span class="dt-span-right"><?php echo $_currentPrice?></span>
+        <div class="clearer"></div>
+        <span class="dt-span-left"><?php echo $this->__('Current Quantity')?></span>
+        <span class="dt-span-right"><?php echo $_currentQuantity?></span>
+    </div>
+    <b><?php echo $this->__('Global Tier Price')?></b>
+    <ul class="dt-deal-tier-prices">
+        <li class="dt-li-title">
+            <span class="dt-span-left"><?php echo $this->__('Quantity')?></span>
+            <span class="dt-span-right"><?php echo $this->__('Price')?></span>
+        </li>
+        <?php foreach ($_tiers as $_tier): ?>
+        <li>
+            <span class="dt-span-left"><?php echo (int) $_tier['tier_qty']; ?></span>
+            <span class="dt-span-right"><?php echo Mage::helper('core')->currency($_tier['tier_price'],true,false); ?></span>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>

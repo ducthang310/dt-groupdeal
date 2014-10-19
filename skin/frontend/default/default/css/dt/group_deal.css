@@ -27,3 +27,12 @@
     white-space: nowrap;
     color: #fff;
 }
+.dt-deal-title, dt-dealtier-prices { display: block; margin-top: 5px; overflow: hidden; padding: 2px 0 2px 10px; background-color: #fafafa; font-weight: bold; }
+.dt-span-left { float: left;}
+.dt-span-right { float: right; color: #111111; }
+.dt-deal-tier { display: block; clear: both; }
+.dt-deal-tier b { display: block; text-align: center; color: #e26703; margin: 10px auto 0px auto; font-size: 18px; }
+.dt-deal-title .dt-span-left { color: #006AA9; }
+ul.dt-deal-tier-prices li { line-height: 1.4; padding: 2px 0 2px 10px; overflow: hidden; margin-left: 8px; background-color: #fafafa; font-weight: bold; margin-top: 2px;}
+.dt-li-title span { color: #006aa9 !important; font-weight: bold; }
+ul.dt-deal-tier-prices li.dt-li-title { margin-left: 0 !important; background: none; margin-top: 0 !important; }
