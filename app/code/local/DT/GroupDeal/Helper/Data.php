@@ -11,10 +11,17 @@
 class DT_GroupDeal_Helper_Data extends Mage_Core_Helper_Abstract
 {
     public function checkDeal($product) {
-        if ($product) {
+        if ($product && $product->getId()) {
+            if (Mage::registry('dt_deal_' . $product->getId())) {
+                return 1;
+            }
             // check deal for $product
-            $ids = array(16, 166, 165);
-            if (in_array($product->getId(), $ids)) {
+            $_col = Mage::getModel('dt_groupdeal/deal')->getCollection();
+            $_col->addFieldToFilter('product_id', $product->getId());
+            $_deal = $_col->getFirstItem();
+            if ($_deal->getId()) {
+                // Check deal with date
+                Mage::register('dt_deal_' . $product->getId(), $_deal);
                 return 1;
             }
         }

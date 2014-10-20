@@ -47,4 +47,14 @@
             <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>dt/checkout/onepage/review/item.phtml</template></action>
         </reference>
     </checkout_onepage_review>
+
+    <dt_groupdeal_index_buy>
+        <reference name="content">
+            <block type="dt_groupdeal/buy" name="dt.buy" as="buy" template="dt/group_deal/buy.phtml">
+                <block type="dt_groupdeal/buy_product" name="dt.buy.deal.product" as="buy_product" template="dt/group_deal/buy/product.phtml"/>
+                <block type="dt_groupdeal/buy_billing" name="dt.buy.deal.billing" as="buy_billing" template="dt/group_deal/buy/billing.phtml"/>
+                <block type="dt_groupdeal/buy_shipping" name="dt.buy.deal.shipping" as="buy_shipping" template="dt/group_deal/buy/shipping.phtml"/>
+            </block>
+        </reference>
+    </dt_groupdeal_index_buy>
 </layout>

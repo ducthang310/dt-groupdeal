@@ -1,0 +1,22 @@
+
+<?php
+$_product = Mage::registry('dt_product');
+?>
+<div class="dt-deal-buy">
+    <form action="<?php echo $this->getSubmitUrl() ?>" method="post" id="deal_buy_form" >
+        <div class="page-title deal-buy-title">
+            <h1><?php echo $this->__('Buy with Deal: %s', $_product->getName()) ?></h1>
+        </div>
+        <?php echo $this->getChildHtml('buy_product'); ?>
+        <?php echo $this->getChildHtml('buy_billing'); ?>
+        <?php echo $this->getChildHtml('buy_shipping'); ?>
+        <button type="submit" value="Submit" name="submit" class="button">
+            <span><?php echo $this->__('Submit')?></span>
+        </button>
+    </form>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    var shippingForm = new VarienForm('deal_buy_form');
+    //]]>
+</script>

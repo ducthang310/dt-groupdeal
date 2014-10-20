@@ -96,6 +96,16 @@
                 </dt_groupdeal>
             </updates>
         </layout>
+
+        <routers>
+            <dt_groupdeal>
+                <use>standard</use>
+                <args>
+                    <module>DT_GroupDeal</module>
+                    <frontName>groupdeal</frontName>
+                </args>
+            </dt_groupdeal>
+        </routers>
     </frontend>
     <admin>
         <routers>
