@@ -8,5 +8,8 @@
  */
 class DT_GroupDeal_Block_Buy extends Mage_Core_Block_Template
 {
-
+    public function getSubmitUrl()
+    {
+        return $this->getUrl('*/*/save', array('id' => $this->getRequest()->getParam('id')));
+    }
 }

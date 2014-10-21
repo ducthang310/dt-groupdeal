@@ -24,6 +24,6 @@ class DT_GroupDeal_Model_Deal extends Mage_Core_Model_Abstract
                 ->where($condition);
             $this->setData('tier_price', $this->getReadConnection()->fetchAll($select));
         }
-        return $this;
+        return $this->getData('tier_price');
     }
 }

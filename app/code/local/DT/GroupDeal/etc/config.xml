@@ -2,7 +2,7 @@
 <config>
     <modules>
         <DT_GroupDeal>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </DT_GroupDeal>
     </modules>
     <global>
@@ -20,6 +20,9 @@
                     <tierprice>
                         <table>dt_deal_tier_price</table>
                     </tierprice>
+                    <order>
+                        <table>dt_deal_order</table>
+                    </order>
                 </entities>
             </dt_groupdeal_resource>
         </models>
@@ -37,6 +40,7 @@
             <dt_groupdeal_setup>
                 <setup>
                     <module>DT_GroupDeal</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
             </dt_groupdeal_setup>
         </resources>
