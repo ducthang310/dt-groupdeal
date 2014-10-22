@@ -33,7 +33,7 @@ class DT_GroupDeal_IndexController extends Mage_Core_Controller_Front_Action
             $product = Mage::getModel('catalog/product')->load($this->getRequest()->getParam('id'));
             if ($product->getId()) {
                 Mage::register('dt_product', $product);
-                if (Mage::helper('dt_groupdeal')->checkDeal($product)) {
+                if (Mage::helper('dt_groupdeal')->checkDealExpired($product)) {
                     return true;
                 }
             }

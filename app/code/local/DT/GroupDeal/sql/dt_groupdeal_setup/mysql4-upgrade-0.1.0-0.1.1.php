@@ -15,8 +15,10 @@ $installer->startSetup();
 try {
     $installer->run("
        ALTER TABLE  `" . $this->getTable('sales/quote_item') . "` ADD  `is_deal` INT(1) NULL;
+       ALTER TABLE  `" . $this->getTable('sales/quote_item') . "` ADD  `has_expired` INT(1) NULL;
 
        ALTER TABLE  `" . $this->getTable('sales/order_item') . "` ADD  `is_deal` INT(1) NULL;
+       ALTER TABLE  `" . $this->getTable('sales/order_item') . "` ADD  `has_expired` INT(1) NULL;
 ");
 
 } catch (Exception $e) {

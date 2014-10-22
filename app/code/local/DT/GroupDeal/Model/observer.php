@@ -10,65 +10,49 @@
  */
 class DT_GroupDeal_Model_observer
 {
-    /**
-     * Apply catalog price rules to product on frontend
-     *
-     * @param   Varien_Event_Observer $observer
-     *
-     * @return  Mage_CatalogRule_Model_Observer
-     */
-    public function processFrontFinalPrice($observer)
+    public function setDealForItem($observer)
     {
-        $product    = $observer->getEvent()->getProduct();
-        $flag = Mage::helper('dt_groupdeal')->checkDeal($product);
-        if ($flag) {
-            $product->setFinalPrice(2.5);
+        $item = $observer->getQuoteItem();
+        if (Mage::app()->getRequest()->getParam('is_deal') && Mage::helper('dt_groupdeal')->checkDealExpired($item->getProduct())) {
+            $item = ($item->getParentItem() ? $item->getParentItem() : $item);
+            $price = 0;
+            $item->setCustomPrice($price);
+            $item->setOriginalCustomPrice($price);
+            $item->getProduct()->setIsSuperMode(true);
+            $item->setIsDeal(1);
+            $item->setHasExpired(1);
+            $item->save();
         }
-        return $this;
     }
 
-    public function saveIsDeal($observer) {
+    public function saveIsExpiredForDeal($observer)
+    {
         /** @var $quote Mage_Sales_Model_Quote */
         $quote = $observer->getEvent()->getQuote();
         try {
-            foreach ($quote->getAllVisibleItems() as $item) {
-                if ($item->getParentItem()) {
-                    continue;
-                }
-                $deal = Mage::helper('dt_groupdeal')->checkDeal($item->getProduct());
-                if ($item->getIsDeal() != $deal) {
-                    $item->setIsDeal($deal);
-                    if ($quote->getId()) {
-                        $item->save();
+            if ($quote->getId()) {
+                foreach ($quote->getAllVisibleItems() as $item) {
+                    if ($item->getParentItem()) {
+                        continue;
                     }
-                }
-                if ($deal) {
-                    $message = array(
-                        'This product is in the Deal time',
-                        'The product\'s price will be calculated as soon as the Deal time is finished.'
-                    );
-                    $item->setMessage($message);
+                    if ($item->getId() && $item->getIsDeal()) {
+                        $deal = Mage::helper('dt_groupdeal')->checkDealExpired($item->getProduct());
+                        if ($item->getHasExpired() != $deal) {
+                            $item->setHasExpired($deal);
+                            $item->save();
+                        }
+                        if ($deal) {
+                            $message = array(
+                                'This product is in the Deal time',
+                                'The product\'s price will be calculated as soon as the Deal time is finished.'
+                            );
+                            $item->setMessage($message);
+                        }
+                    }
                 }
             }
         } catch (Exception $e) {
             Mage::logException($e);
         }
-    }
-
-    /**
-     * Apply catalog price rules to product in admin
-     *
-     * @param   Varien_Event_Observer $observer
-     *
-     * @return  Mage_CatalogRule_Model_Observer
-     */
-    public function processAdminFinalPrice($observer)
-    {
-        $product = $observer->getEvent()->getProduct();
-        $flag = Mage::helper('dt_groupdeal')->checkDeal($product);
-        if ($flag) {
-            $product->setFinalPrice(2.5);
-        }
-        return $this;
     }
 }

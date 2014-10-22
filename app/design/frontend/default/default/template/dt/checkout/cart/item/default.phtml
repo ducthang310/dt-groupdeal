@@ -80,7 +80,7 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage
     </td>
     <?php endif ?>
 
-    <?php if (Mage::helper('dt_groupdeal')->checkDeal($_item->getProduct())) :?>
+    <?php if ($_item->getIsDeal() && $_item->getHasExpired()) :?>
     <td class="a-right">
         <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('dt/group_deal/item.phtml')->toHtml(); ?>
     </td>
@@ -188,7 +188,7 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage
     <td class="a-center">
         <input name="cart[<?php echo $_item->getId() ?>][qty]" value="<?php echo $this->getQty() ?>" size="4" title="<?php echo $this->__('Qty') ?>" class="input-text qty" maxlength="12" />
     </td>
-    <?php if (Mage::helper('dt_groupdeal')->checkDeal($_item->getProduct())) :?>
+    <?php if ($_item->getIsDeal() && $_item->getHasExpired()): ?>
         <td class="a-right">
             <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('dt/group_deal/item.phtml')->toHtml(); ?>
         </td>

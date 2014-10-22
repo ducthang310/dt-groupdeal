@@ -10,7 +10,7 @@
  */ 
 class DT_GroupDeal_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    public function checkDeal($product) {
+    public function checkDealExpired($product) {
         if ($product && $product->getId()) {
             if (Mage::registry('dt_deal_' . $product->getId())) {
                 return 1;
@@ -20,7 +20,7 @@ class DT_GroupDeal_Helper_Data extends Mage_Core_Helper_Abstract
             $_col->addFieldToFilter('product_id', $product->getId());
             $_deal = $_col->getFirstItem();
             if ($_deal->getId()) {
-                // Check deal with date
+                //TODO: Check deal with date
                 Mage::register('dt_deal_' . $product->getId(), $_deal);
                 return 1;
             }

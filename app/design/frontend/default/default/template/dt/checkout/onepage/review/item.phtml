@@ -50,7 +50,7 @@
         <?php endif;?>
     </td>
 
-    <?php if (Mage::helper('dt_groupdeal')->checkDeal($_item->getProduct())) :?>
+    <?php if ($_item->getIsDeal() && $_item->getHasExpired()) :?>
         <td class="a-right">
             <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('dt/group_deal/item.phtml')->toHtml(); ?>
         </td>
@@ -152,7 +152,7 @@
 
     <td class="a-center"><?php echo $_item->getQty() ?></td>
 
-    <?php if (Mage::helper('dt_groupdeal')->checkDeal($_item->getProduct())) :?>
+    <?php if ($_item->getIsDeal() && $_item->getHasExpired()): ?>
         <td class="a-right">
             <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('dt/group_deal/item.phtml')->toHtml(); ?>
         </td>
