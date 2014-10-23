@@ -61,7 +61,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Dealform extends Mage_Adminhtm
             'required' => true,
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATETIME_INTERNAL_FORMAT,
-            'format'       => $dateFormatIso
+            'format'       => Varien_Date::DATETIME_INTERNAL_FORMAT,
+            'time' => true
         ));
         $fieldset->addField('deal_to_date', 'date', array(
             'name'   => 'deal_to_date',
@@ -71,7 +72,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Dealform extends Mage_Adminhtm
             'required' => true,
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
             'input_format' => Varien_Date::DATETIME_INTERNAL_FORMAT,
-            'format'       => $dateFormatIso
+            'format'       => Varien_Date::DATETIME_INTERNAL_FORMAT,
+            'time' => true
         ));
 
         $fieldset->addField('deal_description', 'textarea', array(

@@ -43,18 +43,18 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'group_deal_name'
         ));
 
-        $this->addColumn('created_at', array(
-            'header' => Mage::helper('dt_groupdeal')->__('Created At'),
+        $this->addColumn('deal_from_date', array(
+            'header' => Mage::helper('dt_groupdeal')->__('From Date'),
             'width' => '10px',
             'type' => 'datetime',
-            'index' => 'created_at',
+            'index' => 'deal_from_date',
         ));
 
-        $this->addColumn('updated_at', array(
-            'header' => Mage::helper('dt_groupdeal')->__('Updated At'),
+        $this->addColumn('deal_to_date', array(
+            'header' => Mage::helper('dt_groupdeal')->__('To Date'),
             'width' => '100px',
             'type' => 'datetime',
-            'index' => 'updated_at',
+            'index' => 'deal_to_date',
         ));
 
         $this->addExportType('*/*/exportCsv', Mage::helper('dt_groupdeal')->__('CSV'));
