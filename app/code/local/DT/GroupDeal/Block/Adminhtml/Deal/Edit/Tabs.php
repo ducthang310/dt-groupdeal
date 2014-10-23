@@ -24,6 +24,12 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs extends Mage_Adminhtml_Block_W
             'content' => $this->getLayout()->createBlock('dt_groupdeal/adminhtml_deal_edit_tabs_dealform')->toHtml(),
         ));
 
+        $this->addTab('orders', array(
+            'label'     => $this->__('Orders'),
+            'class'     => 'ajax',
+            'url'       => $this->getUrl('*/*/orders', array('_current' => true)),
+        ));
+
         return parent::_beforeToHtml();
     }
 

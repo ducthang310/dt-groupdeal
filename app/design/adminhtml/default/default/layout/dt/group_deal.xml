@@ -9,10 +9,17 @@
             <block type="dt_groupdeal/adminhtml_deal" name="deal"/>
         </reference>
     </adminhtml_deal_index>
+
     <adminhtml_deal_edit>
         <reference name="head">
             <action method="setTitle" translate="title"><title>Deal Edit</title></action>
             <action method="addCss"><name>dt/groupdeal.css</name></action>
         </reference>
     </adminhtml_deal_edit>
+
+    <adminhtml_deal_orders>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="dt_groupdeal/adminhtml_deal_edit_tabs_orders" name="dt_groupdeal.deal.edit.tab.orders"/>
+        </block>
+    </adminhtml_deal_orders>
 </layout>

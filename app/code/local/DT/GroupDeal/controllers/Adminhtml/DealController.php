@@ -121,4 +121,13 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         $this->_redirect('*/*/');
 
     }
+
+    /**
+     * Deal orders grid
+     *
+     */
+    public function ordersAction() {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
 }
