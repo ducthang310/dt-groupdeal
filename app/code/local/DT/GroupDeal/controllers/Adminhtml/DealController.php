@@ -16,14 +16,26 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         $this->renderLayout();
     }
 
+    protected function _initDeal($idFieldName = 'id')
+    {
+        $dealId = (int) $this->getRequest()->getParam($idFieldName);
+        $deal = Mage::getModel('dt_groupdeal/deal');
+
+        if ($dealId) {
+            $deal->load($dealId);
+        }
+
+        Mage::register('current_deal', $deal);
+        return $this;
+    }
+
     public function deleteAction()
     {
+        $this->_initDeal();
         if ($this->getRequest()->getParam('id') > 0) {
             try {
-                $model = Mage::getModel('dt_groupdeal/deal');
-
-                $model->setId($this->getRequest()->getParam('id'))
-                    ->delete();
+                $model = Mage::registry('current_deal');
+                $model->delete();
 
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Deal was successfully deleted'));
                 $this->_redirect('*/*/');
@@ -62,10 +74,10 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
     }
 
     public function editAction() {
-        $id = $this->getRequest()->getParam('id');
-        $model = Mage::getModel('dt_groupdeal/deal')->load($id);
+        $this->_initDeal();
+        $model = Mage::registry('current_deal');
 
-        if ($model->getId() || $id == 0) {
+        if ($model->getId() || $this->getRequest()->getParam('id') == 0) {
             $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
             if (!empty($data)) {
                 $model->setData($data);
@@ -95,8 +107,9 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
     public function saveAction() {
         if ($postData = $this->getRequest()->getPost()) {
             try {
-                $dealModel = Mage::getModel('dt_groupdeal/deal');
-                $dealModel->setId($this->getRequest()->getParam('id'))
+                $this->_initDeal();
+                $dealModel = Mage::registry('current_deal');
+                $dealModel
                     ->addData($postData)
                     ->save();
 
@@ -127,6 +140,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
      *
      */
     public function ordersAction() {
+        $this->_initDeal();
         $this->loadLayout();
         $this->renderLayout();
     }

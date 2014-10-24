@@ -17,7 +17,7 @@ class DT_GroupDeal_Model_Deal extends Mage_Core_Model_Abstract
     }
 
     public function getTierPrice() {
-        if (!$this->getData('tier_price') && $this->getId()) {var_dump($this->getReadConnection());die();
+        if (!$this->getData('tier_price') && $this->getId()) {
             $condition = $this->getReadConnection()->quoteInto('group_deal_id =?', $this->getId());
             $select = $this->getReadConnection()->select()
                 ->from($this->getTable('dt_groupdeal/tierprice'), array('tier_id', 'tier_qty', 'tier_price'))

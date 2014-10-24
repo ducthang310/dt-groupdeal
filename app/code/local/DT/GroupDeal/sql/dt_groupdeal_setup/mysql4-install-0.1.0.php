@@ -23,6 +23,7 @@ CREATE TABLE {$this->getTable('dt_group_deal')} (
   `deal_from_date` timestamp NOT NULL default '0000-00-00 00:00:00',
   `deal_to_date` timestamp NOT NULL default '0000-00-00 00:00:00',
   `deal_description` text NOT NULL,
+  `order_ids` text NOT NULL,
   `created_at` timestamp NOT NULL default '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY (`group_deal_id`)

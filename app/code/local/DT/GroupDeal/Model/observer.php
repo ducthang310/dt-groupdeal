@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2014
  *
  */
-class DT_GroupDeal_Model_observer
+class DT_GroupDeal_Model_Observer
 {
     public function setDealForItem($observer)
     {
@@ -53,6 +53,38 @@ class DT_GroupDeal_Model_observer
             }
         } catch (Exception $e) {
             Mage::logException($e);
+        }
+    }
+
+    /**
+     * Add order_id for Deal if the order has Product Deal
+     *
+     * @param Varien_Event_Observer $observer
+     * @return null
+     */
+    public function saveOrderIdForDeal($observer) {
+        /** @var $orderInstance Mage_Sales_Model_Order */
+        $orderInstance = $observer->getOrder();
+        $items = $orderInstance->getAllItems();
+        foreach ($items as $item) {
+            if ($item->getParentItem()) {
+                continue;
+            }
+            if ($item->getIsDeal() && $item->getHasExpired() && Mage::helper('dt_groupdeal')->checkDealExpired($item->getProduct())) {
+                $deal = Mage::registry('dt_deal_' . $item->getProduct()->getId());
+                $deal->setData('no_update_tier', true);
+                try {
+                    if (!$deal->getOrderIds()) {
+                        $deal->setOrderIds($orderInstance->getId());
+                        $deal->save();
+                    } else {
+                        $deal->setOrderIds($deal->getOrderIds() . ',' . $orderInstance->getId());
+                        $deal->save();
+                    }
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
+            }
         }
     }
 }

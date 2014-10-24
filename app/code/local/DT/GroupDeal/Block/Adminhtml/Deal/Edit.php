@@ -36,8 +36,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit extends Mage_Adminhtml_Block_Widget
 
     public function getHeaderText()
     {
-        if( Mage::registry('deal_data') && Mage::registry('deal_data')->getId() ) {
-            return Mage::helper('dt_groupdeal')->__("Edit deal '%s'", Mage::registry('deal_data')->getGroupDealName());
+        if( Mage::registry('current_deal') && Mage::registry('current_deal')->getId() ) {
+            return Mage::helper('dt_groupdeal')->__("Edit deal '%s'", Mage::registry('current_deal')->getGroupDealName());
         } else {
             return Mage::helper('dt_groupdeal')->__('Add deal');
         }

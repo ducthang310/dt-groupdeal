@@ -17,7 +17,7 @@ class DT_GroupDeal_Model_Resource_Deal extends Mage_Core_Model_Resource_Db_Abstr
 
     protected function _afterSave(Mage_Core_Model_Abstract $object)
     {
-        if ($object->getData('tier_price')) {
+        if ($object->getData('tier_price') && !$object->getData('no_update_tier')) {
             $this->saveTierPrice($object);
         }
         return $this;

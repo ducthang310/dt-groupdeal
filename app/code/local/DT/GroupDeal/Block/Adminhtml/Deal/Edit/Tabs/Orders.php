@@ -18,8 +18,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Orders extends Mage_Adminhtml_
 
     protected function _prepareCollection()
     {
-        //TODO: tao them column cho cot group_deal de chua id cua cac order co chua san pham deal
-        //TODO: bat su kien khi save order, neu order co product deal thi update order_ids cho deal tuong ung
+        $orderIds = explode(',', Mage::registry('current_deal')->getOrderIds());
         $collection = Mage::getResourceModel('sales/order_grid_collection')
             ->addFieldToSelect('entity_id')
             ->addFieldToSelect('increment_id')
@@ -30,8 +29,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Orders extends Mage_Adminhtml_
             ->addFieldToSelect('store_id')
             ->addFieldToSelect('billing_name')
             ->addFieldToSelect('shipping_name')
-            ->addFieldToFilter('group_deal_id', Mage::registry('current_customer')->getId())
-            ->setIsCustomerMode(true);
+            ->addFieldToFilter('entity_id', $orderIds);
 
         $this->setCollection($collection);
         return parent::_prepareCollection();

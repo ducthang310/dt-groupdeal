@@ -14,7 +14,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Dealform extends Mage_Adminhtm
         // initial form
         $form = new Varien_Data_Form();
         $this->setForm($form);
-        $dealData = Mage::registry('deal_data');
+        $dealData = Mage::registry('current_deal');
 
         $fieldset = $form->addFieldset('dt_form', array('legend' => Mage::helper('dt_groupdeal')->__('Group Deal information')));
 
@@ -52,7 +52,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Dealform extends Mage_Adminhtm
             $this->getLayout()->createBlock('dt_groupdeal/adminhtml_deal_edit_tabs_renderer_tier')
         );
 
-        $dateFormatIso = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+        $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
         $fieldset->addField('deal_from_date', 'date', array(
             'name'   => 'deal_from_date',
             'label'  => Mage::helper('dt_groupdeal')->__('From Date'),
@@ -60,8 +60,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Dealform extends Mage_Adminhtm
             'class' => 'required-entry',
             'required' => true,
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
-            'input_format' => Varien_Date::DATETIME_INTERNAL_FORMAT,
-            'format'       => Varien_Date::DATETIME_INTERNAL_FORMAT,
+            'input_format' => $dateFormatIso,
+            'format'       => $dateFormatIso,
             'time' => true
         ));
         $fieldset->addField('deal_to_date', 'date', array(
@@ -71,8 +71,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Dealform extends Mage_Adminhtm
             'class' => 'required-entry',
             'required' => true,
             'image'  => $this->getSkinUrl('images/grid-cal.gif'),
-            'input_format' => Varien_Date::DATETIME_INTERNAL_FORMAT,
-            'format'       => Varien_Date::DATETIME_INTERNAL_FORMAT,
+            'input_format' => $dateFormatIso,
+            'format'       => $dateFormatIso,
             'time' => true
         ));
 
@@ -86,8 +86,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Dealform extends Mage_Adminhtm
         if (Mage::getSingleton('adminhtml/session')->getDealData()) {
             $form->setValues(Mage::getSingleton('adminhtml/session')->getDealData());
             Mage::getSingleton('adminhtml/session')->setDealData(null);
-        } elseif (Mage::registry('deal_data')) {
-            $form->setValues(Mage::registry('deal_data')->getData());
+        } elseif (Mage::registry('current_deal')) {
+            $form->setValues(Mage::registry('current_deal')->getData());
         }
 
         return parent::_prepareForm();

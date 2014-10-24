@@ -59,6 +59,14 @@
                     </dt_groupdeal>
                 </observers>
             </catalog_product_type_configurable_price>
+            <sales_order_place_after>
+                <observers>
+                    <dt_groupdeal>
+                        <class>dt_groupdeal/observer</class>
+                        <method>saveOrderIdForDeal</method>
+                    </dt_groupdeal>
+                </observers>
+            </sales_order_place_after>
         </events>
 
         <fieldsets>
