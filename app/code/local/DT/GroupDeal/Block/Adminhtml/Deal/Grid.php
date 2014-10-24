@@ -39,21 +39,21 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Grid extends Mage_Adminhtml_Block_Widget
         $this->addColumn('group_deal_name', array(
             'header' => Mage::helper('dt_groupdeal')->__('Name'),
             'align' => 'left',
-            'width' => '150px',
+            'width' => '550px',
             'index' => 'group_deal_name'
         ));
 
         $this->addColumn('deal_from_date', array(
             'header' => Mage::helper('dt_groupdeal')->__('From Date'),
-            'width' => '10px',
-            'type' => 'datetime',
+            'width' => '90px',
+            'type' => 'date',
             'index' => 'deal_from_date',
         ));
 
         $this->addColumn('deal_to_date', array(
             'header' => Mage::helper('dt_groupdeal')->__('To Date'),
-            'width' => '100px',
-            'type' => 'datetime',
+            'width' => '90px',
+            'type' => 'date',
             'index' => 'deal_to_date',
         ));
 
