@@ -144,4 +144,12 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         $this->loadLayout();
         $this->renderLayout();
     }
+
+    public function newOrderAction() {
+        var_dump($this->getRequest()->getParams());die;
+    }
+
+    public function sendMailAction() {
+        var_dump($this->getRequest()->getParams());die;
+    }
 }

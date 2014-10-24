@@ -38,38 +38,38 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Orders extends Mage_Adminhtml_
     protected function _prepareColumns()
     {
         $this->addColumn('increment_id', array(
-            'header'    => Mage::helper('customer')->__('Order #'),
+            'header'    => $this->__('Order #'),
             'width'     => '100',
             'index'     => 'increment_id',
         ));
 
         $this->addColumn('created_at', array(
-            'header'    => Mage::helper('customer')->__('Purchase On'),
+            'header'    => $this->__('Purchase On'),
             'index'     => 'created_at',
             'type'      => 'datetime',
         ));
 
         /*$this->addColumn('shipping_firstname', array(
-            'header'    => Mage::helper('customer')->__('Shipped to First Name'),
+            'header'    => $this->__('Shipped to First Name'),
             'index'     => 'shipping_firstname',
         ));
 
         $this->addColumn('shipping_lastname', array(
-            'header'    => Mage::helper('customer')->__('Shipped to Last Name'),
+            'header'    => $this->__('Shipped to Last Name'),
             'index'     => 'shipping_lastname',
         ));*/
         $this->addColumn('billing_name', array(
-            'header'    => Mage::helper('customer')->__('Bill to Name'),
+            'header'    => $this->__('Bill to Name'),
             'index'     => 'billing_name',
         ));
 
         $this->addColumn('shipping_name', array(
-            'header'    => Mage::helper('customer')->__('Shipped to Name'),
+            'header'    => $this->__('Shipped to Name'),
             'index'     => 'shipping_name',
         ));
 
         $this->addColumn('grand_total', array(
-            'header'    => Mage::helper('customer')->__('Order Total'),
+            'header'    => $this->__('Order Total'),
             'index'     => 'grand_total',
             'type'      => 'currency',
             'currency'  => 'order_currency_code',
@@ -77,22 +77,20 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Orders extends Mage_Adminhtml_
 
         if (!Mage::app()->isSingleStoreMode()) {
             $this->addColumn('store_id', array(
-                'header'    => Mage::helper('customer')->__('Bought From'),
+                'header'    => $this->__('Bought From'),
                 'index'     => 'store_id',
                 'type'      => 'store',
                 'store_view' => true
             ));
         }
 
-        if (Mage::helper('sales/reorder')->isAllow()) {
-            $this->addColumn('action', array(
-                'header'    => ' ',
-                'filter'    => false,
-                'sortable'  => false,
-                'width'     => '100px',
-                'renderer'  => 'adminhtml/sales_reorder_renderer_action'
-            ));
-        }
+        $this->addColumn('action', array(
+            'header'    => $this->__('Action'),
+            'filter'    => false,
+            'sortable'  => false,
+            'width'     => '135px',
+            'renderer'  => 'dt_groupdeal/adminhtml_deal_edit_tabs_renderer_action'
+        ));
 
         return parent::_prepareColumns();
     }
