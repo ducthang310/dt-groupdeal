@@ -14,8 +14,7 @@ class DT_GroupDeal_Block_Catalog_Product_Deal extends Mage_Core_Block_Template
     {
         parent::_construct();
         if ($this->checkInDealTime()) {
-            $_col = Mage::getModel('dt_groupdeal/deal')->load(1);
-            $this->_groupDeal = $_col;
+            $this->_groupDeal = Mage::registry('dt_deal_' . $this->getProduct()->getId());
         }
 
     }
