@@ -19,20 +19,30 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
     public function render(Varien_Object $row)
     {
         $this->_actions = array();
-        if (true) {
+        if (!$row->getData('deal_create_new')) {
             $newOrderAction = array(
                 '@' => array('href' => $this->getUrl('*/deal/newOrder', array('order_id'=>$row->getId(), 'product_id'=>Mage::registry('current_deal')->getProductId(), 'deal_id'=>Mage::registry('current_deal')->getId()))),
                 '#' =>  Mage::helper('sales')->__('New Order')
             );
-            $this->addToActions($newOrderAction);
+        } else {
+            $newOrderAction = array(
+                '@' => array('href' => 'javascript:void(0)'),
+                '#' =>  Mage::helper('sales')->__('Order-Created')
+            );
         }
-        if (true) {
+        $this->addToActions($newOrderAction);
+        if (!$row->getData('deal_send_mail')) {
             $sendMailAction = array(
                 '@' => array('href' => $this->getUrl('*/deal/sendMail', array('order_id'=>$row->getId(), 'product_id'=>Mage::registry('current_deal')->getProductId(), 'deal_id'=>Mage::registry('current_deal')->getId()))),
                 '#' =>  Mage::helper('sales')->__('Send Mail')
             );
-            $this->addToActions($sendMailAction);
+        }else {
+            $sendMailAction = array(
+                '@' => array('href' => 'javascript:void(0)'),
+                '#' =>  Mage::helper('sales')->__('Email-Sent')
+            );
         }
+        $this->addToActions($sendMailAction);
         return $this->_actionsToHtml();
     }
 

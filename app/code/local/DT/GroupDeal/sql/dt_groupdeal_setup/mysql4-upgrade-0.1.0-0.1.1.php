@@ -19,6 +19,12 @@ try {
 
        ALTER TABLE  `" . $this->getTable('sales/order_item') . "` ADD  `is_deal` INT(1) NULL;
        ALTER TABLE  `" . $this->getTable('sales/order_item') . "` ADD  `has_expired` INT(1) NULL;
+
+       ALTER TABLE  `" . $this->getTable('sales/order') . "` ADD  `deal_create_new` INT(1) NULL;
+       ALTER TABLE  `" . $this->getTable('sales/order') . "` ADD  `deal_send_mail` INT(1) NULL;
+
+       ALTER TABLE  `" . $this->getTable('sales_flat_order_grid') . "` ADD  `deal_create_new` INT(1) NULL;
+       ALTER TABLE  `" . $this->getTable('sales_flat_order_grid') . "` ADD  `deal_send_mail` INT(1) NULL;
 ");
 
 } catch (Exception $e) {

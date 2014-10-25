@@ -29,6 +29,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Orders extends Mage_Adminhtml_
             ->addFieldToSelect('store_id')
             ->addFieldToSelect('billing_name')
             ->addFieldToSelect('shipping_name')
+            ->addFieldToSelect('deal_create_new')
+            ->addFieldToSelect('deal_send_mail')
             ->addFieldToFilter('entity_id', $orderIds);
 
         $this->setCollection($collection);
@@ -88,7 +90,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Orders extends Mage_Adminhtml_
             'header'    => $this->__('Action'),
             'filter'    => false,
             'sortable'  => false,
-            'width'     => '135px',
+            'width'     => '162px',
             'renderer'  => 'dt_groupdeal/adminhtml_deal_edit_tabs_renderer_action'
         ));
 

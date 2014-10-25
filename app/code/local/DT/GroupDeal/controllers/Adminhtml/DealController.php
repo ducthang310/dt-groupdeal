@@ -209,6 +209,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                 $orderExchange->save();
                 // send order email
                 $orderExchange->sendOrderUpdateEmail(true, $comment);
+                $order->setDealCreateNew(1)->save();
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Order #' . $orderExchange->getIncrementId() . ' has been created from #') . $order->getIncrementId());
             }
         }
@@ -262,6 +263,8 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                     if (!$mailTemplate->getSentSuccess()) {
                         throw new Exception();
                     }
+
+                    $order->setDealSendMail(1)->save();
 
                     $translate->setTranslateInline(true);
                 } catch (Exception $e) {
