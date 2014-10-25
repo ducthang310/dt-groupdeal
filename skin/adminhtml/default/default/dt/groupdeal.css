@@ -4,3 +4,41 @@
 input.dt_qty { width: 45px !important; }
 input.dt_price { width: 154px !important; }
 .form-list td.value select { width: 68px; }
+.dt-deal-item-queueing, .dt-deal-item-running, .dt-deal-item-ended, .dt-deal-item-disabled {
+    display: block;
+    height: 16px;
+    background-image: url(../images/bg_notifications.gif);
+    background-repeat: no-repeat;
+    font: bold 10px/16px Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0 0 0 7px;
+    margin: 1px 0;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.dt-deal-item-queueing span, .dt-deal-item-running span, .dt-deal-item-ended span , .dt-deal-item-disabled span{
+    display: block;
+    height: 16px;
+    background-image: url(../images/bg_notifications.gif);
+    background-repeat: no-repeat;
+    font: bold 10px/16px Arial, Helvetica, sans-serif;
+    padding: 0 7px 0 0;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 1px 0;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.dt-deal-item-queueing { background-position: 0 -32px;}
+.dt-deal-item-queueing span { background-position: 100% -32px; }
+.dt-deal-item-running { background-position: 0 -48px;}
+.dt-deal-item-running span { background-position: 100% -48px; }
+.dt-deal-item-ended { background-position: 0 -16px;}
+.dt-deal-item-ended span { background-position: 100% -16px; }
+.dt-deal-item-disabled { background-position: 0 0;}
+.dt-deal-item-disabled span { background-position: 100% 0; }
+
+

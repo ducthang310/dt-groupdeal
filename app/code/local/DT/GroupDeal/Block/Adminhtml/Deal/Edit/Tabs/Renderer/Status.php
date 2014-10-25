@@ -9,8 +9,11 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Status extends Mage_A
 {
     public function render(Varien_Object $row)
     {
-        $result = Mage::helper('dt_groupdeal')->checkDealTime($row);
-        return '<span style="color:red;">'.$result['status'].'</span>';
-
+        if ($row->getIsActive()) {
+            $result = Mage::helper('dt_groupdeal')->checkDealTime($row);
+        } else {
+            $result['status'] = 'disabled';
+        }
+        return '<span class="dt-deal-item-' . $result['status'] . '"><span>' . $result['status'] . '</span></span>';
     }
 }

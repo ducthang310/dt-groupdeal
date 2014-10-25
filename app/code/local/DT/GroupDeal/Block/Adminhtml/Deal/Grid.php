@@ -39,12 +39,13 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Grid extends Mage_Adminhtml_Block_Widget
         $this->addColumn('group_deal_name', array(
             'header' => Mage::helper('dt_groupdeal')->__('Name'),
             'align' => 'left',
-            'width' => '550px',
+//            'width' => '650px',
             'index' => 'group_deal_name'
         ));
 
         $this->addColumn('deal_status', array(
             'header'=> Mage::helper('dt_groupdeal')->__('Status'),
+            'width' => '120px',
             'index' => 'deal_status',
             'renderer'  => 'DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Status'
         ));
