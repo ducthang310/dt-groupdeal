@@ -12,7 +12,7 @@ class DT_GroupDeal_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const DEAL_STATUS_ENDED = 'ended';
     const DEAL_STATUS_RUNNING = 'running';
-    const DEAL_STATUS_QUEUED = 'queued';
+    const DEAL_STATUS_QUEUEING = 'queueing';
 
     public function checkDealTime($deal) {
         $dealFromTime = new DateTime($deal->getDealFromDate());
@@ -23,7 +23,7 @@ class DT_GroupDeal_Helper_Data extends Mage_Core_Helper_Abstract
         } elseif ($dealFromTime < $currentTime && $currentTime < $dealToTime) {
             $result['status'] = self::DEAL_STATUS_RUNNING;
         } else {
-            $result['status'] = self::DEAL_STATUS_QUEUED;
+            $result['status'] = self::DEAL_STATUS_QUEUEING;
         }
         return $result;
     }

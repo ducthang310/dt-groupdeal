@@ -43,6 +43,12 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'group_deal_name'
         ));
 
+        $this->addColumn('deal_status', array(
+            'header'=> Mage::helper('dt_groupdeal')->__('Status'),
+            'index' => 'deal_status',
+            'renderer'  => 'DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Status'
+        ));
+
         $this->addColumn('deal_from_date', array(
             'header' => Mage::helper('dt_groupdeal')->__('From Date'),
             'width' => '90px',
