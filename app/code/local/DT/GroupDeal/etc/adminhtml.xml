@@ -17,6 +17,17 @@
         <resources>
             <admin>
                 <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <dt_groupdeal translate="title" module="dt_groupdeal">
+                                        <title>DT Section</title>
+                                    </dt_groupdeal>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
                     <dt_groupdeal translate="title" module="dt_groupdeal">
                         <title>Group Deal</title>
                         <sort_order>10</sort_order>

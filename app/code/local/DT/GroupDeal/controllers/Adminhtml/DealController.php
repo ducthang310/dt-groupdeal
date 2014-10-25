@@ -10,6 +10,11 @@
  */
 class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_action
 {
+    const XML_PATH_EMAIL_TEMPLATE_NEW_ORDER = 'dt_groupdeal/email_deal/email_new_order_template';
+    const XML_PATH_EMAIL_TEMPLATE_JOIN_DEAL = 'dt_groupdeal/email_deal/email_join_deal_template';
+    const XML_PATH_EMAIL_TEMPLATE_AFTER_DEAL = 'dt_groupdeal/email_deal/email_after_deal_template';
+    const XML_PATH_EMAIL_DEAL_SENDER = 'dt_groupdeal/email_deal/sender_email_identity';
+
     public function indexAction()
     {
         $this->loadLayout();
@@ -18,7 +23,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
 
     protected function _initDeal($idFieldName = 'id')
     {
-        $dealId = (int) $this->getRequest()->getParam($idFieldName);
+        $dealId = (int)$this->getRequest()->getParam($idFieldName);
         $deal = Mage::getModel('dt_groupdeal/deal');
 
         if ($dealId) {
@@ -73,7 +78,8 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         );
     }
 
-    public function editAction() {
+    public function editAction()
+    {
         $this->_initDeal();
         $model = Mage::registry('current_deal');
 
@@ -100,11 +106,13 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         }
     }
 
-    public function newAction() {
+    public function newAction()
+    {
         $this->_forward('edit');
     }
 
-    public function saveAction() {
+    public function saveAction()
+    {
         if ($postData = $this->getRequest()->getPost()) {
             try {
                 $this->_initDeal();
@@ -139,13 +147,15 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
      * Deal orders grid
      *
      */
-    public function ordersAction() {
+    public function ordersAction()
+    {
         $this->_initDeal();
         $this->loadLayout();
         $this->renderLayout();
     }
 
-    public function newOrderAction() {
+    public function newOrderAction()
+    {
         $dataParams = $this->getRequest()->getParams();
         if (isset($dataParams['order_id']) && isset($dataParams['product_id'])) {
             $order = Mage::getModel('sales/order')->load($dataParams['order_id']);
@@ -165,6 +175,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                         $product = Mage::getModel('catalog/product')->load($dataParams['product_id']);
                         if ($product->getId()) {
                             $quote->addProduct($product, $item->getQtyOrdered());
+                            break;// relative of product and deal is 1-1
                         }
                         //TODO: new process to add exist item's data to quote ||| Note: this function is only active with simple product
 //                        $dataItem = $item->getData();
@@ -204,7 +215,65 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         $this->_redirect('*/*/edit', array('id' => $dataParams['deal_id']));
     }
 
-    public function sendMailAction() {
-        var_dump($this->getRequest()->getParams());die;
+    public function sendMailAction()
+    {
+        $dataParams = $this->getRequest()->getParams();
+        if (isset($dataParams['deal_id'])) {
+            $deal = Mage::getModel('dt_groupdeal/deal')->load($dataParams['deal_id']);
+            $order = Mage::getModel('sales/order')->load($dataParams['order_id']);
+            if ($deal->getId() && $order->getId()) {
+                try {
+                    $translate = Mage::getSingleton('core/translate');
+                    /* @var $translate Mage_Core_Model_Translate */
+                    $translate->setTranslateInline(false);
+                    $recipientEmail = $order->getCustomerEmail() ? $order->getCustomerEmail() : $order->getShippingAddress()->getEmail();
+                    $dataEmail = array();
+                    // data for email template: deal; order; product
+                    // deal: info of deal + info after deal
+                    $dataEmail['deal'] = $deal;
+                    // order: order id + purchase date
+                    $dataEmail['order'] = $order;
+                    // item: name + + sku + base price + ordered qty
+                    $items = $order->getItemsCollection();
+                    foreach ($items as $item) {
+                        if ($item->getProductId() == $dataParams['product_id'] && $item->getIsDeal() && $item->getHasExpired()) {
+                            $item->setOriginalPrice(Mage::helper('core')->currency($item->getData('original_price'),true,false));
+                            $dataEmail['product'] =  $item;
+                            break;// relative of product and deal is 1-1
+                        }
+                    }
+
+                    //TODO: add final price of deal product to dataObject
+
+                    $dataObject = new Varien_Object();
+                    $dataObject->setData($dataEmail);
+
+                    $mailTemplate = Mage::getModel('core/email_template');
+                    /* @var $mailTemplate Mage_Core_Model_Email_Template */
+                    $mailTemplate->setDesignConfig(array('area' => 'frontend'))
+                        ->sendTransactional(
+                        Mage::getStoreConfig(self::XML_PATH_EMAIL_TEMPLATE_AFTER_DEAL),
+                        Mage::getStoreConfig(self::XML_PATH_EMAIL_DEAL_SENDER),
+                        $recipientEmail,
+                        null,
+                        array('data' => $dataObject)
+                    );
+
+                    if (!$mailTemplate->getSentSuccess()) {
+                        throw new Exception();
+                    }
+
+                    $translate->setTranslateInline(true);
+                } catch (Exception $e) {
+                    $translate->setTranslateInline(true);
+
+                    Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Can\'t sent email. Please, try again later'));
+                    $this->_redirect('*/*/edit', array('id' => $dataParams['deal_id']));
+                    return;
+                }
+            }
+        }
+        Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('An confirmation email has been sent to Customer'));
+        $this->_redirect('*/*/edit', array('id' => $dataParams['deal_id']));
     }
 }

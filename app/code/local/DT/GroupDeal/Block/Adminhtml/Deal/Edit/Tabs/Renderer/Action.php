@@ -28,7 +28,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
         }
         if (true) {
             $sendMailAction = array(
-                '@' => array('href' => $this->getUrl('*/deal/sendMail', array('order_id'=>$row->getId()))),
+                '@' => array('href' => $this->getUrl('*/deal/sendMail', array('order_id'=>$row->getId(), 'product_id'=>Mage::registry('current_deal')->getProductId(), 'deal_id'=>Mage::registry('current_deal')->getId()))),
                 '#' =>  Mage::helper('sales')->__('Send Mail')
             );
             $this->addToActions($sendMailAction);

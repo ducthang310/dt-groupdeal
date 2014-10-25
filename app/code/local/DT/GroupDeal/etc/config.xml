@@ -79,6 +79,26 @@
                 </has_expired>
             </sales_convert_quote_item>
         </fieldsets>
+
+        <template>
+            <email>
+                <dt_groupdeal_email_deal_email_new_order_template translate="label" module="dt_groupdeal">
+                    <label>Deal: New Order Template</label>
+                    <file>dt_deal_new_order.html</file>
+                    <type>text</type>
+                </dt_groupdeal_email_deal_email_new_order_template>
+                <dt_groupdeal_email_deal_email_join_deal_template translate="label" module="dt_groupdeal">
+                    <label>Deal: Join-Deal Template</label>
+                    <file>dt_deal_join_deal.html</file>
+                    <type>text</type>
+                </dt_groupdeal_email_deal_email_join_deal_template>
+                <dt_groupdeal_email_deal_email_after_deal_template translate="label" module="dt_groupdeal">
+                    <label>Deal: After-Deal Template</label>
+                    <file>dt_deal_after_deal.html</file>
+                    <type>text</type>
+                </dt_groupdeal_email_deal_email_after_deal_template>
+            </email>
+        </template>
     </global>
 
     <frontend>
@@ -160,4 +180,15 @@
             </catalog_product_get_final_price>
         </events>
     </adminhtml>
+
+    <default>
+        <dt_groupdeal>
+            <config_deal>
+                <enabled>1</enabled>
+            </config_deal>
+            <email_deal>
+                <sender_email_identity>custom2</sender_email_identity>
+            </email_deal>
+        </dt_groupdeal>
+    </default>
 </config>
