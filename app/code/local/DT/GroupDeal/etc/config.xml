@@ -51,14 +51,6 @@
         </resources>
 
         <events>
-            <catalog_product_type_configurable_price>
-                <observers>
-                    <dt_groupdeal>
-                        <class>dt_groupdeal/observer</class>
-                        <method>catalogProductTypeConfigurablePrice</method>
-                    </dt_groupdeal>
-                </observers>
-            </catalog_product_type_configurable_price>
             <sales_order_place_after>
                 <observers>
                     <dt_groupdeal>
