@@ -13,7 +13,7 @@ class DT_GroupDeal_Model_Observer
     public function setDealForItem($observer)
     {
         $item = $observer->getQuoteItem();
-        if (Mage::app()->getRequest()->getParam('is_deal') && Mage::helper('dt_groupdeal')->checkDealExpired($item->getProduct())) {
+        if (Mage::app()->getRequest()->getParam('is_deal') && Mage::helper('dt_groupdeal')->checkProductInDeal($item->getProduct())) {
             $item = ($item->getParentItem() ? $item->getParentItem() : $item);
             $price = 0;
             $item->setCustomPrice($price);
@@ -36,7 +36,7 @@ class DT_GroupDeal_Model_Observer
                         continue;
                     }
                     if ($item->getId() && $item->getIsDeal()) {
-                        $deal = Mage::helper('dt_groupdeal')->checkDealExpired($item->getProduct());
+                        $deal = Mage::helper('dt_groupdeal')->checkProductInDeal($item->getProduct());
                         if ($item->getHasExpired() != $deal) {
                             $item->setHasExpired($deal);
                             $item->save();
@@ -70,7 +70,7 @@ class DT_GroupDeal_Model_Observer
             if ($item->getParentItem()) {
                 continue;
             }
-            if ($item->getIsDeal() && $item->getHasExpired() && Mage::helper('dt_groupdeal')->checkDealExpired($item->getProduct())) {
+            if ($item->getIsDeal() && $item->getHasExpired() && Mage::helper('dt_groupdeal')->checkProductInDeal($item->getProduct())) {
                 $deal = Mage::registry('dt_deal_' . $item->getProduct()->getId());
                 $deal->setData('no_update_tier', true);
                 try {

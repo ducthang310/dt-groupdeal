@@ -90,7 +90,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Orders extends Mage_Adminhtml_
             'header'    => $this->__('Action'),
             'filter'    => false,
             'sortable'  => false,
-            'width'     => '162px',
+            'width'     => '90px',
             'renderer'  => 'dt_groupdeal/adminhtml_deal_edit_tabs_renderer_action'
         ));
 

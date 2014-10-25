@@ -19,9 +19,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
     public function render(Varien_Object $row)
     {
         $this->_actions = array();
-        $dealToTime = new DateTime(Mage::registry('current_deal')->getDealToDate());
-        $currentTime = new DateTime(Mage::getModel('core/date')->date('Y-m-d H:i:s'));
-        if ($dealToTime < $currentTime) {
+        $result = Mage::helper('dt_groupdeal')->checkDealTime(Mage::registry('current_deal'));
+        if ($result['status'] == DT_GroupDeal_Helper_Data::DEAL_STATUS_ENDED) {
             if (!$row->getData('deal_create_new')) {
                 $newOrderAction = array(
                     '@' => array('href' => $this->getUrl('*/deal/newOrder', array('order_id'=>$row->getId(), 'product_id'=>Mage::registry('current_deal')->getProductId(), 'deal_id'=>Mage::registry('current_deal')->getId()))),
@@ -81,7 +80,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
             $attributesObject->setData($action['@']);
             $html[] = '<a ' . $attributesObject->serialize() . '>' . $action['#'] . '</a>';
         }
-        return  implode($html, '<span class="separator">|</span>');
+        return  implode($html, '<br>');
     }
 
     /**

@@ -35,6 +35,6 @@ class DT_GroupDeal_Block_Catalog_Product_Deal extends Mage_Core_Block_Template
     }
 
     public function checkInDealTime() {
-        return Mage::helper('dt_groupdeal')->checkDealExpired($this->getProduct());
+        return Mage::helper('dt_groupdeal')->checkProductInDeal($this->getProduct());
     }
 }
