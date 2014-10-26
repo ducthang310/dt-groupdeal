@@ -51,7 +51,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit extends Mage_Adminhtml_Block_Widget
                     } else {
                         $dataCal['class'] = 'add-widget';
                         $dataCal['msg'] = Mage::helper('adminhtml')->__('Are you sure you want to do this?');
-                        $dataCal['url'] = $this->getUrl('*/*/reset', array('id' => Mage::registry('current_deal')->getId()));
+                        $dataCal['url'] = $this->getUrl('*/*/calculate', array('id' => Mage::registry('current_deal')->getId()));
                         $dataCal['onclick'] = "actionDealConfirm('" . $dataCal['msg'] . "', '" . $dataCal['url'] . "')";
 
                         $dataRes['class'] = 'disabled';

@@ -94,4 +94,8 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Tier
 
         return $values;
     }
+
+    public function getDeal() {
+        return Mage::registry('current_deal');
+    }
 }

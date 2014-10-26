@@ -1,6 +1,7 @@
 <?php $_htmlId      = $this->getElement()->getHtmlId() ?>
 <?php $_htmlClass   = $this->getElement()->getClass() ?>
 <?php $_htmlName    = $this->getElement()->getName() ?>
+<?php $_deal = $this->getDeal();?>
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
     <td colspan="10" class="grid tier dt_tier">
@@ -26,6 +27,51 @@
             </tfoot>
         </table>
     </td>
+
+    <?php if ($_deal && $_deal->getId() && $_deal->getIsCalculated()): ?>
+    <td class="grid tier dt_calculated">
+        <table cellspacing="0" id="dt_calculated_table">
+            <col width="117" />
+            <col width="172" />
+
+            <thead>
+            <tr class="headings">
+                <th colspan="2" class="a-center"><?php echo $this->__('Info of Deal after Calculated Price'); ?></th>
+            </tr>
+            </thead>
+
+            <tbody id="calculated_container">
+            <tr>
+                <td>Last Price</td>
+                <td class="a-center"><b><?php echo Mage::helper('core')->currency($_deal->getCurrentPrice(), true, false)?></b></td>
+            </tr>
+            <tr>
+                <td>Ordered Quantity</td>
+                <td class="a-center"><b><?php echo $_deal->getCurrentQtyOrdered(); ?></b></td>
+            </tr>
+            </tbody>
+        </table>
+        <script type="text/javascript">
+            //<![CDATA[
+            document.observe("dom:loaded", disableDeal);
+            function disableDeal() {
+                var inputs = $$('#dt_form input');
+                var buttons = $$('#dt_form button');
+                $('deal_from_date_trig').hide();
+                $('deal_to_date_trig').hide();
+                inputs.each(function(input) {
+                    input.disabled = true;
+                });
+                buttons.each(function(button) {
+                    button.disabled = true;
+                });
+                $('deal_description').disabled = true;
+                $('is_active').disabled = true;
+            }
+            //]]>
+        </script>
+    </td>
+    <?php endif; ?>
 </tr>
 
 <script type="text/javascript">

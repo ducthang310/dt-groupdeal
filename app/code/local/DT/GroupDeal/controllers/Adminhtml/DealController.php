@@ -288,4 +288,32 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
         Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('An confirmation email has been sent to Customer'));
         $this->_redirect('*/*/edit', array('id' => $dataParams['deal_id']));
     }
+
+    public function resetAction() {
+        $this->_initDeal();
+        $deal = Mage::registry('current_deal');
+        Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('dt_groupdeal')->__('Fap fap fap.'));
+        $this->_redirect('*/*/edit', array('id' => $deal->getId()));
+    }
+
+    public function calculateAction() {
+        $this->_initDeal();
+        $deal = Mage::registry('current_deal');
+        if ($deal->getId()) {
+            $result = Mage::helper('dt_groupdeal')->checkDealTime($deal);
+            if ($result['status'] == DT_GroupDeal_Helper_Data::DEAL_STATUS_ENDED) {
+                if (!$deal->getIsCalculated()) {
+                    $deal->setIsCalculated(1)->save();
+                    Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Group Deal was successfully calculated.'));
+                } else {
+                    Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('This deal has been calculated.'));
+                }
+            } else {
+                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Can not do this action. The deal has not ended yet.'));
+            }
+        } else {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Please specify a group deal.'));
+        }
+        $this->_redirect('*/*/edit', array('id' => $deal->getId()));
+    }
 }
