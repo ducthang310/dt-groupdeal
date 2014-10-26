@@ -248,6 +248,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                     foreach ($items as $item) {
                         if ($item->getProductId() == $dataParams['product_id'] && $item->getIsDeal() && $item->getHasExpired()) {
                             $item->setOriginalPrice(Mage::helper('core')->currency($item->getData('original_price'),true,false));
+                            $item->setQtyOrdered((int) $item->getQtyOrdered());
                             $dataEmail['product'] =  $item;
                             break;// relative of product and deal is 1-1
                         }
@@ -277,6 +278,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
 
                     $translate->setTranslateInline(true);
                 } catch (Exception $e) {
+                    Mage::logException($e);
                     $translate->setTranslateInline(true);
 
                     Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Can\'t sent email. Please, try again later'));

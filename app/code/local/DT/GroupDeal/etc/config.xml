@@ -180,6 +180,9 @@
             </config_deal>
             <email_deal>
                 <sender_email_identity>custom2</sender_email_identity>
+                <email_after_deal_template>dt_groupdeal_email_deal_email_after_deal_template</email_after_deal_template>
+                <email_new_order_template>dt_groupdeal_email_deal_email_new_order_template</email_new_order_template>
+                <email_join_deal_template>dt_groupdeal_email_deal_email_join_deal_template</email_join_deal_template>
             </email_deal>
         </dt_groupdeal>
     </default>

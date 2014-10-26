@@ -28,8 +28,9 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
                 );
             } else {
                 $newOrderAction = array(
-                    '@' => array('href' => 'javascript:void(0)'),
-                    '#' =>  Mage::helper('dt_groupdeal')->__('Order-Created')
+                    '@' => array('class' => 'dt-no-action'),
+                    '#' =>  Mage::helper('dt_groupdeal')->__('Order-Created'),
+                    's' => true
                 );
             }
             $this->addToActions($newOrderAction);
@@ -40,15 +41,17 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
                 );
             }else {
                 $sendMailAction = array(
-                    '@' => array('href' => 'javascript:void(0)'),
-                    '#' =>  Mage::helper('dt_groupdeal')->__('Email-Sent')
+                    '@' => array('class' => 'dt-no-action'),
+                    '#' =>  Mage::helper('dt_groupdeal')->__('Email-Sent'),
+                    's' => true
                 );
             }
             $this->addToActions($sendMailAction);
         } else {
             $sendMailAction = array(
-                '@' => array('href' => 'javascript:void(0)'),
-                '#' =>  Mage::helper('dt_groupdeal')->__('No Action')
+                '@' => array('class' => 'dt-no-action'),
+                '#' =>  Mage::helper('dt_groupdeal')->__('No Action'),
+                's' => true
             );
             $this->addToActions($sendMailAction);
         }
@@ -78,7 +81,12 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
 
         foreach ($actions as $action) {
             $attributesObject->setData($action['@']);
-            $html[] = '<a ' . $attributesObject->serialize() . '>' . $action['#'] . '</a>';
+            if (isset($action['s']) && $action['s']) {
+                $html[] = '<span ' . $attributesObject->serialize() . '>' . $action['#'] . '</span>';
+            } else {
+                $html[] = '<a ' . $attributesObject->serialize() . '>' . $action['#'] . '</a>';
+            }
+
         }
         return  implode($html, '<br>');
     }

@@ -45,3 +45,4 @@ input.dt_price { width: 154px !important; }
 #dt_calculated_table { float: right; border: 8px solid #a9bfd3;}
 #dt_calculated_table tr.headings { height: 30px !important; line-height: 30px !important; font-size: 18px !important;}
 .dt_calculated li.notice-msg { margin: 0 0 3px 0 !important; }
+#deal_orders_grid_table a.dt-no-action { text-decoration: none; color: #ebebff;}
