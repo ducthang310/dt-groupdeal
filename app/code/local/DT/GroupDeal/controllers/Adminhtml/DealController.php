@@ -117,13 +117,22 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
             try {
                 $this->_initDeal();
                 $dealModel = Mage::registry('current_deal');
+                if (!$dealModel->getId()) {
+                    $product = Mage::getModel('catalog/product')->load($postData['product_id']);
+                    if ($product->getId()) {
+                        $postData['current_price'] = $product->getFinalPrice();
+                    } else {
+                        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('The product with id %s does not exist.', $postData['product_id']));
+                        $this->_redirect('*/*/');
+                        return;
+                    }
+                }
                 $dealModel
                     ->addData($postData)
                     ->save();
-
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Group Deal was successfully saved'));
-                Mage::getSingleton('adminhtml/session')->setFormData(false);
 
+                Mage::getSingleton('adminhtml/session')->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
                     $this->_redirect('*/*/edit', array('id' => $dealModel->getId()));
                     return;

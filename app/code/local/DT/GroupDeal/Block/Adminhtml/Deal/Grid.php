@@ -43,6 +43,21 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Grid extends Mage_Adminhtml_Block_Widget
             'index' => 'group_deal_name'
         ));
 
+        $this->addColumn('current_qty_ordered', array(
+            'header' => Mage::helper('dt_groupdeal')->__('Ordered Quantity'),
+            'align' => 'right',
+            'width' => '10px',
+            'index' => 'current_qty_ordered',
+        ));
+
+        $this->addColumn('current_price', array(
+            'header' => Mage::helper('dt_groupdeal')->__('Current Price'),
+            'align' => 'right',
+            'width' => '10px',
+            'index' => 'current_price',
+            'renderer'  => 'DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Price'
+        ));
+
         $this->addColumn('deal_status', array(
             'header'=> Mage::helper('dt_groupdeal')->__('Status'),
             'width' => '120px',

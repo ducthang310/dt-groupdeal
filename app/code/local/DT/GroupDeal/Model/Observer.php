@@ -74,13 +74,26 @@ class DT_GroupDeal_Model_Observer
                 $deal = Mage::registry('dt_deal_' . $item->getProduct()->getId());
                 $deal->setData('no_update_tier', true);
                 try {
+                    $deal->setCurrentQtyOrdered((int) $deal->getCurrentQtyOrdered() + (int) $item->getQtyOrdered());
+//                    $tierPrice = $deal->getTierPrice();
+//                    if (0 < sizeof($tierPrice)) {
+//                        $currentPrice = $deal->getCurrentPrice();
+//                        for ($i = 0; $i < sizeof($tierPrice); $i++) {
+//                            if ((int) $tierPrice[$i]['tier_qty'] <= (int) $item->getQtyOrdered()) {
+//                                $currentPrice = $tierPrice[$i]['tier_price'];
+//                            } else {
+//                                break;
+//                            }
+//                        }
+//                        $deal->setCurrentPrice($currentPrice);
+//                    }
+
                     if (!$deal->getOrderIds()) {
                         $deal->setOrderIds($orderInstance->getId());
-                        $deal->save();
                     } else {
                         $deal->setOrderIds($deal->getOrderIds() . ',' . $orderInstance->getId());
-                        $deal->save();
                     }
+                    $deal->save();
                 } catch (Exception $e) {
                     Mage::logException($e);
                 }

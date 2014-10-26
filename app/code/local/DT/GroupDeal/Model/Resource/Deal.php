@@ -57,7 +57,8 @@ class DT_GroupDeal_Model_Resource_Deal extends Mage_Core_Model_Resource_Db_Abstr
         $condition = $this->getReadConnection()->quoteInto('group_deal_id =?', $object->getId());
         $select = $this->getReadConnection()->select()
             ->from($this->getTable('dt_groupdeal/tierprice'), array('tier_id', 'tier_qty', 'tier_price'))
-            ->where($condition);
+            ->where($condition)
+            ->order('tier_qty ' . Zend_Db_Select::SQL_ASC);
         $object->setData('tier_price', $this->getReadConnection()->fetchAll($select));
         return $this;
     }
