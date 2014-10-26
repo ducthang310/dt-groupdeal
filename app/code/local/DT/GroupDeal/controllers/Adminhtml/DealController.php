@@ -292,7 +292,34 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
     public function resetAction() {
         $this->_initDeal();
         $deal = Mage::registry('current_deal');
-        Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('dt_groupdeal')->__('Fap fap fap.'));
+        if ($deal->getId()) {
+            if ($deal->getIsCalculated()) {
+                $data = array(
+                    'deal_from_date' => Mage::getModel('core/date')->date('Y-m-d H:i:s'),
+                    'deal_to_date' => Mage::getModel('core/date')->date('Y-m-d H:i:s'),
+                    'deal_description' => null,
+                    'order_ids' => null,
+                    'current_price' => null,
+                    'current_qty_ordered' => 0,
+                    'is_calculated' => null
+                );
+                if ($deal->getProductId()) {
+                    $product = Mage::getModel('catalog/product')->load($deal->getProductId());
+                    if ($product->getId()) {
+                        $data['current_price'] = $product->getFinalPrice();
+                    } else {
+                        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('The product with id %s does not exist.', $postData['product_id']));
+                        return;
+                    }
+                }
+                $deal->addData($data)->save();
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Group Deal was successfully reset.'));
+            } else {
+                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('This deal has not been calculated.'));
+            }
+        } else {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Please specify a group deal.'));
+        }
         $this->_redirect('*/*/edit', array('id' => $deal->getId()));
     }
 

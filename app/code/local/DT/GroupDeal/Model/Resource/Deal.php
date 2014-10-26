@@ -30,7 +30,7 @@ class DT_GroupDeal_Model_Resource_Deal extends Mage_Core_Model_Resource_Db_Abstr
             $count = 0;
             foreach ($data as $row) {
                 if ($row['tier_id'] || !$row['delete']) {
-                    if ($row['delete']) {
+                    if (isset($row['delete']) && $row['delete']) {
                         // delete
                         $query .= "DELETE FROM `" . $this->getTable('dt_groupdeal/tierprice') . "` WHERE `tier_id` = " . $row["tier_id"] . ";";
                     } elseif ($row['tier_id']) {
