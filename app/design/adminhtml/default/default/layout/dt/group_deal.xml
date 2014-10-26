@@ -22,4 +22,10 @@
             <block type="dt_groupdeal/adminhtml_deal_edit_tabs_orders" name="dt_groupdeal.deal.edit.tab.orders"/>
         </block>
     </adminhtml_deal_orders>
+
+    <adminhtml_sales_order_view>
+        <reference name="head">
+            <action method="addCss"><name>dt/groupdeal.css</name></action>
+        </reference>
+    </adminhtml_sales_order_view>
 </layout>

@@ -139,6 +139,11 @@
     </td>
     <td><?php echo $this->getColumnHtml($_item, 'qty') ?></td>
 
+    <?php if ($_item->getIsDeal() && $_item->getHasExpired()) :?>
+    <td class="a-right">
+        <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('dt/groupdeal/item.phtml')->toHtml(); ?>
+    </td>
+    <?php else: ?>
     <td class="a-right">
         <?php if ($this->helper('tax')->displaySalesBothPrices() || $this->helper('tax')->displaySalesPriceExclTax()): ?>
             <span class="price-excl-tax">
@@ -234,6 +239,8 @@
             </span>
         <?php endif; ?>
     </td>
+    <?php endif; ?>
+
     <td class="a-right"><?php echo $this->displayPriceAttribute('tax_amount') ?></td>
     <td class="a-right"><?php echo $this->displayTaxPercent($_item) ?></td>
     <td class="a-right"><?php echo $this->displayPriceAttribute('discount_amount') ?></td>

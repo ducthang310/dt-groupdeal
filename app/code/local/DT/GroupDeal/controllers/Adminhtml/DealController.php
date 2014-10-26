@@ -213,7 +213,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                 $service->submitAll();
                 $orderExchange = $service->getOrder();
                 // add comment
-                $comment = 'An Order has been created for deal product from order #' . $order->getIncrementId();
+                $comment = 'This Order has been created for deal product from order #' . $order->getIncrementId();
                 $orderExchange->addStatusHistoryComment($comment);
                 $orderExchange->save();
                 // send order email
