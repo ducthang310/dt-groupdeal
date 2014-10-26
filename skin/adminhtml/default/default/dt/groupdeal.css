@@ -1,7 +1,7 @@
 
 .columns .form-list td.dt_tier { padding-left: 5px !important; padding-bottom: 5px !important; padding-top: 5px !important; }
 .tier #dt_tiers_table { width: 334px; }
-.dt_calculated { padding: 5px 0 5px 100px; }
+.dt_calculated { padding: 5px 0 5px 78px; }
 input.dt_qty { width: 45px !important; }
 input.dt_price { width: 154px !important; }
 .form-list td.value select { width: 68px; }
@@ -42,6 +42,6 @@ input.dt_price { width: 154px !important; }
 .dt-deal-item-disabled { background-position: 0 0;}
 .dt-deal-item-disabled span { background-position: 100% 0; }
 
-#dt_calculated_table { width: 300px !important; float: right; border: 8px solid #a9bfd3;}
+#dt_calculated_table { float: right; border: 8px solid #a9bfd3;}
 #dt_calculated_table tr.headings { height: 30px !important; line-height: 30px !important; font-size: 18px !important;}
-
+.dt_calculated li.notice-msg { margin: 0 0 3px 0 !important; }

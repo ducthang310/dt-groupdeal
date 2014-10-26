@@ -30,6 +30,8 @@
 
     <?php if ($_deal && $_deal->getId() && $_deal->getIsCalculated()): ?>
     <td class="grid tier dt_calculated">
+        <?php $buttonHtml = '<button class="scalable add-widget" type="button" title="Reset Deal"><span><span><span>Reset Deal</span></span></span></button>'; ?>
+        <ul class="messages"><li class="notice-msg"><ul><li><span><?php echo $this->__('You need %s before edit for new deal', $buttonHtml); ?></span></li></ul></li></ul>
         <table cellspacing="0" id="dt_calculated_table">
             <col width="117" />
             <col width="172" />
