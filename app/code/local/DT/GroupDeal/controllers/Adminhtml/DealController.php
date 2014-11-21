@@ -180,12 +180,12 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
 
                 $items = $order->getItemsCollection();
                 foreach ($items as $item) {
-                    if ($item->getProductId() == $dataParams['product_id'] && $item->getIsDeal() && $item->getHasExpired()) {
-                        $product = Mage::getModel('catalog/product')->load($dataParams['product_id']);
-                        if ($product->getId()) {
-                            $quote->addProduct($product, $item->getQtyOrdered());
-                            break;// relative of product and deal is 1-1
-                        }
+                    if (is_null($item->getParentItem()) && $item->getProductId() == $dataParams['product_id'] && $item->getIsDeal() && $item->getHasExpired()) {
+//                        $product = Mage::getModel('catalog/product')->load($dataParams['product_id']);
+//                        if ($product->getId()) {
+//                            $quote->addProduct($product, $item->getQtyOrdered());
+//                            break;// relative of product and deal is 1-1
+//                        }
                         //TODO: new process to add exist item's data to quote ||| Note: this function is only active with simple product
 //                        $dataItem = $item->getData();
 //                        unset($dataItem['item_id']);
@@ -195,6 +195,19 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
 //                        $item->setQuote($quote);
 //                        $item->setProduct($product);
 //                        $quote->getItemsCollection()->addItem($item);
+                        try {
+                            /* @var $item Mage_Sales_Model_Order_Item */
+                            $product = Mage::getModel('catalog/product')->load($dataParams['product_id']);
+                            if (!$product->getId()) {
+                                return $this;
+                            }
+
+                            $info = $item->getProductOptionByCode('info_buyRequest');
+                            $info = new Varien_Object($info);
+                            $quote->addProduct($product, $info);
+                        } catch (Mage_Core_Exception $e){
+                            Mage::logException($e);
+                        }
                     }
                 }
 
