@@ -345,8 +345,13 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
             $result = Mage::helper('dt_groupdeal')->checkDealTime($deal);
             if ($result['status'] == DT_GroupDeal_Helper_Data::DEAL_STATUS_ENDED) {
                 if (!$deal->getIsCalculated()) {
-                    $deal->setIsCalculated(1)->save();
-                    Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Group Deal was successfully calculated.'));
+                    try {
+                        $deal->setIsCalculated(1)->save();
+                        Mage::getModel('catalog/product')->load($deal->getProductId())->setSpecialPrice($deal->getCurrentPrice());
+                        Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Group Deal was successfully calculated.'));
+                    } catch (Exception $e) {
+                        Mage::logException($e);
+                    }
                 } else {
                     Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('This deal has been calculated.'));
                 }

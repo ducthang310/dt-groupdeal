@@ -13,15 +13,17 @@ class DT_GroupDeal_Model_Observer
     public function setDealForItem($observer)
     {
         $item = $observer->getQuoteItem();
-        if (Mage::app()->getRequest()->getParam('is_deal') && Mage::helper('dt_groupdeal')->checkProductInDeal($item->getProduct())) {
+        if (Mage::app()->getRequest()->getParam('is_deal')) {
             $item = ($item->getParentItem() ? $item->getParentItem() : $item);
-            $price = 0;
-            $item->setCustomPrice($price);
-            $item->setOriginalCustomPrice($price);
-            $item->getProduct()->setIsSuperMode(true);
-            $item->setIsDeal(1);
-            $item->setHasExpired(1);
-            $item->save();
+            if (Mage::helper('dt_groupdeal')->checkProductInDeal($item->getProduct())) {
+                $price = 0;
+                $item->setCustomPrice($price);
+                $item->setOriginalCustomPrice($price);
+                $item->getProduct()->setIsSuperMode(true);
+                $item->setIsDeal(1);
+                $item->setHasExpired(1);
+//                $item->save();
+            }
         }
     }
 
