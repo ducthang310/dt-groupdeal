@@ -23,7 +23,7 @@ class DT_GroupDeal_Block_Adminhtml_Deal_Edit_Tabs_Renderer_Action
         if ($result['status'] == DT_GroupDeal_Helper_Data::DEAL_STATUS_ENDED) {
             if (!$row->getData('deal_create_new')) {
                 $newOrderAction = array(
-                    '@' => array('href' => $this->getUrl('*/deal/newOrder', array('order_id'=>$row->getId(), 'product_id'=>Mage::registry('current_deal')->getProductId(), 'deal_id'=>Mage::registry('current_deal')->getId()))),
+                    '@' => array('href' => $this->getUrl('*/deal/newOrder', array('order_id'=>$row->getId(), 'product_id'=>Mage::registry('current_deal')->getProductId(), 'deal_id'=>Mage::registry('current_deal')->getId(), 'price' => Mage::registry('current_deal')->getCurrentPrice()))),
                     '#' =>  Mage::helper('dt_groupdeal')->__('New Order')
                 );
             } else {

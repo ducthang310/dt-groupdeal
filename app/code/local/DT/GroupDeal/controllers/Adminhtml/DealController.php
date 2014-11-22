@@ -205,6 +205,14 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                             $info = $item->getProductOptionByCode('info_buyRequest');
                             $info = new Varien_Object($info);
                             $quote->addProduct($product, $info);
+                            if (isset($dataParams['price']) && $dataParams['price']) {
+                                foreach ($quote->getAllVisibleItems() as $item) {
+                                    $item->setCustomPrice($dataParams['price']);
+                                    $item->setOriginalCustomPrice($dataParams['price']);
+                                    $item->getProduct()->setIsSuperMode(true);
+                                    break;
+                                }
+                            }
                         } catch (Mage_Core_Exception $e){
                             Mage::logException($e);
                         }
@@ -214,11 +222,12 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                 $billingAddress = $quote->getBillingAddress()->addData($billAdd->getData());
                 $shippingAddress = $quote->getShippingAddress()->addData($shipAdd->getData());
 
+                $paymentCode = 'checkmo';
                 $shippingAddress->setCollectShippingRates(true)->collectShippingRates()
                     ->setShippingMethod($order->getShippingMethod())
-                    ->setPaymentMethod($order->getPayment()->getMethodInstance()->getCode());
+                    ->setPaymentMethod($paymentCode);
 
-                $quote->getPayment()->importData(array('method' => $order->getPayment()->getMethodInstance()->getCode()));
+                $quote->getPayment()->importData(array('method' => $paymentCode));
 
                 $quote->collectTotals()->save();
 
@@ -347,7 +356,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                 if (!$deal->getIsCalculated()) {
                     try {
                         $deal->setIsCalculated(1)->save();
-                        Mage::getModel('catalog/product')->load($deal->getProductId())->setSpecialPrice($deal->getCurrentPrice());
+//                        Mage::getModel('catalog/product')->load($deal->getProductId())->setSpecialPrice($deal->getCurrentPrice())->save();
                         Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Group Deal was successfully calculated.'));
                     } catch (Exception $e) {
                         Mage::logException($e);
