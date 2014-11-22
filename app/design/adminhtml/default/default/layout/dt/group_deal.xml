@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
-    <adminhtml_deal_index>
+    <adminhtml_tier_index>
         <reference name="head">
-            <action method="setTitle" translate="title"><title>Group Deal Manager</title></action>
+            <action method="setTitle" translate="title"><title>Tier Manager</title></action>
             <action method="addCss"><name>dt/groupdeal.css</name></action>
         </reference>
         <reference name="content">
-            <block type="dt_groupdeal/adminhtml_deal" name="deal"/>
+            <block type="dt_groupdeal/adminhtml_tier" name="tier"/>
         </reference>
-    </adminhtml_deal_index>
+    </adminhtml_tier_index>
 
-    <adminhtml_deal_edit>
+    <adminhtml_tier_edit>
         <reference name="head">
-            <action method="setTitle" translate="title"><title>Deal Edit</title></action>
+            <action method="setTitle" translate="title"><title>Tier Edit</title></action>
             <action method="addCss"><name>dt/groupdeal.css</name></action>
         </reference>
-    </adminhtml_deal_edit>
+    </adminhtml_tier_edit>
 
     <adminhtml_deal_orders>
         <block type="core/text_list" name="root" output="toHtml">

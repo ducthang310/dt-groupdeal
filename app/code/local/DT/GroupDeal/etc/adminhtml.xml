@@ -6,9 +6,9 @@
             <sort_order>71</sort_order>
             <children>
                 <deals translate="title"  module="dt_groupdeal">
-                    <title>Manage Group Deal</title>
+                    <title>Manage Tier Price</title>
                     <sort_order>0</sort_order>
-                    <action>adminhtml/deal/index</action>
+                    <action>adminhtml/tier/index</action>
                 </deals>
             </children>
         </dt_groupdeal>
@@ -33,7 +33,7 @@
                         <sort_order>10</sort_order>
                         <children>
                             <deals translate="title">
-                                <title>Manage Group Deal</title>
+                                <title>Manage Tier Price</title>
                             </deals>
                         </children>
                     </dt_groupdeal>

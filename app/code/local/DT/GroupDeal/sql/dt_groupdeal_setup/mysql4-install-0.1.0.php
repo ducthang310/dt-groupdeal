@@ -18,6 +18,7 @@ $installer->run("
 CREATE TABLE {$this->getTable('dt_group_deal')} (
   `group_deal_id` int(11) unsigned NOT NULL auto_increment,
   `product_id` int(11) NOT NULL,
+  `tier_id` int(11) NOT NULL,
   `group_deal_name` varchar(255) NOT NULL,
   `is_active` boolean NOT NULL default 1,
   `deal_from_date` timestamp NOT NULL default '0000-00-00 00:00:00',
@@ -36,7 +37,7 @@ $installer->run("
 -- DROP TABLE IF EXISTS {$this->getTable('dt_deal_tier_price')};
 CREATE TABLE {$this->getTable('dt_deal_tier_price')} (
   `tier_id` int(11) unsigned NOT NULL auto_increment,
-  `group_deal_id` int(11) NOT NULL,
+  `tier_name` varchar(255) NOT NULL,
   `tier_qty` decimal(12,4) NOT NULL,
   `tier_price` decimal(12,4) NOT NULL,
   PRIMARY KEY (`tier_id`)

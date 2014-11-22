@@ -17,9 +17,9 @@
                     <deal>
                         <table>dt_group_deal</table>
                     </deal>
-                    <tierprice>
+                    <tier>
                         <table>dt_deal_tier_price</table>
-                    </tierprice>
+                    </tier>
                     <order>
                         <table>dt_deal_order</table>
                     </order>
