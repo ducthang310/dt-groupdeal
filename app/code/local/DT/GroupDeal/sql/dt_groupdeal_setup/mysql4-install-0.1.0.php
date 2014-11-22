@@ -38,8 +38,7 @@ $installer->run("
 CREATE TABLE {$this->getTable('dt_deal_tier_price')} (
   `tier_id` int(11) unsigned NOT NULL auto_increment,
   `tier_name` varchar(255) NOT NULL,
-  `tier_qty` decimal(12,4) NOT NULL,
-  `tier_price` decimal(12,4) NOT NULL,
+  `tier_price` text NOT NULL,
   PRIMARY KEY (`tier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");

@@ -109,16 +109,7 @@ class DT_GroupDeal_Adminhtml_TierController extends Mage_Adminhtml_Controller_Ac
             try {
                 $this->_initTier();
                 $tierModel = Mage::registry('current_tier');
-                if (!$tierModel->getId()) {
-                    $product = Mage::getModel('catalog/product')->load($postData['product_id']);
-                    if ($product->getId()) {
-                        $postData['current_price'] = $product->getFinalPrice();
-                    } else {
-                        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('The product with id %s does not exist.', $postData['product_id']));
-                        $this->_redirect('*/*/');
-                        return;
-                    }
-                }
+                $postData['tier_price'] = Mage::helper('core')->jsonEncode($postData['tier_price']);
                 $tierModel
                     ->addData($postData)
                     ->save();

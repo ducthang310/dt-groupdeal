@@ -20,9 +20,6 @@
                     <tier>
                         <table>dt_deal_tier_price</table>
                     </tier>
-                    <order>
-                        <table>dt_deal_order</table>
-                    </order>
                 </entities>
             </dt_groupdeal_resource>
             <sales>

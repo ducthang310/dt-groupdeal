@@ -16,28 +16,13 @@ class DT_GroupDeal_Block_Adminhtml_Tier_Edit_Tabs_Tierform extends Mage_Adminhtm
         $this->setForm($form);
         $tierData = Mage::registry('current_tier');
 
-        $fieldset = $form->addFieldset('dt_form', array('legend' => Mage::helper('dt_groupdeal')->__('Group Deal information')));
+        $fieldset = $form->addFieldset('dt_form', array('legend' => Mage::helper('dt_groupdeal')->__('Tier information')));
 
-        $fieldset->addField('group_deal_name', 'text', array(
+        $fieldset->addField('tier_name', 'text', array(
             'label' => Mage::helper('dt_groupdeal')->__('Name'),
             'class' => 'required-entry',
             'required' => true,
-            'name' => 'group_deal_name',
-        ));
-
-        $fieldset->addField('product_id', 'text', array(
-            'label' => Mage::helper('dt_groupdeal')->__('Product Id'),
-            'class' => 'required-entry',
-            'required' => true,
-            'name' => 'product_id',
-        ));
-
-        $fieldset->addField('is_active', 'select', array(
-            'label' => Mage::helper('dt_groupdeal')->__('Status'),
-            'class' 	=> 'input-select',
-            'required' => true,
-            'name' => 'is_active',
-            'options'	=> array('1' => Mage::helper('adminhtml')->__('Active'), '0' => Mage::helper('adminhtml')->__('Inactive')),
+            'name' => 'tier_name',
         ));
 
         $fieldset->addField('tier_price', 'text', array(
@@ -45,49 +30,18 @@ class DT_GroupDeal_Block_Adminhtml_Tier_Edit_Tabs_Tierform extends Mage_Adminhtm
             'class'=> 'required-entry',
             'required' => true,
             'name' => 'tier_price',
-            'value' => $dealData->getData('tier_price')
+            'value' => $tierData->getData('tier_price')
         ));
 
         $form->getElement('tier_price')->setRenderer(
-            $this->getLayout()->createBlock('dt_groupdeal/adminhtml_deal_edit_tabs_renderer_tier')
+            $this->getLayout()->createBlock('dt_groupdeal/adminhtml_tier_edit_tabs_renderer_price')
         );
 
-        $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
-        $fieldset->addField('deal_from_date', 'date', array(
-            'name'   => 'deal_from_date',
-            'label'  => Mage::helper('dt_groupdeal')->__('From Date'),
-            'title'  => Mage::helper('dt_groupdeal')->__('From Date'),
-            'class' => 'required-entry',
-            'required' => true,
-            'image'  => $this->getSkinUrl('images/grid-cal.gif'),
-            'input_format' => $dateFormatIso,
-            'format'       => $dateFormatIso,
-            'time' => true
-        ));
-        $fieldset->addField('deal_to_date', 'date', array(
-            'name'   => 'deal_to_date',
-            'label'  => Mage::helper('dt_groupdeal')->__('To Date'),
-            'title'  => Mage::helper('dt_groupdeal')->__('To Date'),
-            'class' => 'required-entry',
-            'required' => true,
-            'image'  => $this->getSkinUrl('images/grid-cal.gif'),
-            'input_format' => $dateFormatIso,
-            'format'       => $dateFormatIso,
-            'time' => true
-        ));
-
-        $fieldset->addField('deal_description', 'textarea', array(
-            'label' => Mage::helper('dt_groupdeal')->__('Description'),
-            'class' => 'required-entry',
-            'required' => true,
-            'name' => 'deal_description',
-        ));
-
-        if (Mage::getSingleton('adminhtml/session')->getDealData()) {
-            $form->setValues(Mage::getSingleton('adminhtml/session')->getDealData());
-            Mage::getSingleton('adminhtml/session')->setDealData(null);
-        } elseif (Mage::registry('current_deal')) {
-            $form->setValues(Mage::registry('current_deal')->getData());
+        if (Mage::getSingleton('adminhtml/session')->getTierData()) {
+            $form->setValues(Mage::getSingleton('adminhtml/session')->getTierData());
+            Mage::getSingleton('adminhtml/session')->setTierData(null);
+        } elseif (Mage::registry('current_tier')) {
+            $form->setValues(Mage::registry('current_tier')->getData());
         }
 
         return parent::_prepareForm();
