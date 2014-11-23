@@ -1,0 +1,24 @@
+<table cellspacing="0" id="deal_tier_price" class="border">
+    <colgroup>
+        <col width="117">
+        <col width="172">
+    </colgroup>
+    <thead>
+    <tr class="headings">
+        <th>Qty</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody id="tier_price_container">
+    <?php foreach ($this->getValues() as $_item): ?>
+        <tr>
+            <td class="nobr">
+                <input type="text" id="deal_price_row_<?php echo $count; ?>_qty" value="<?php echo $_item['tier_qty']*1 ?>" name="deal[<?php echo $count; ?>][tier_qty]" class="input-text" /> <small class="nobr">and above</small>
+            </td>
+            <td class="last">
+                <input type="text" id="deal_price_row_<?php echo $count; ?>_price" value="<?php echo sprintf('%.2f', $_item['tier_price']) ?>" name="deal[<?php echo $count; ?>][tier_price]" class="input-text" />
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
