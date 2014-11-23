@@ -32,6 +32,11 @@
             <dt_groupdeal>
                 <class>DT_GroupDeal_Block</class>
             </dt_groupdeal>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_edit_tabs>DT_GroupDeal_Block_Adminhtml_Catalog_Product_Edit_Tabs</catalog_product_edit_tabs>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <helpers>
             <dt_groupdeal>

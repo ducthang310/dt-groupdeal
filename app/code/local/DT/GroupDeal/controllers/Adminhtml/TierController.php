@@ -109,6 +109,11 @@ class DT_GroupDeal_Adminhtml_TierController extends Mage_Adminhtml_Controller_Ac
             try {
                 $this->_initTier();
                 $tierModel = Mage::registry('current_tier');
+                foreach($postData['tier_price'] as $k => $tier) {
+                    if ($tier['delete']) {
+                        unset($postData['tier_price'][$k]);
+                    }
+                }
                 $postData['tier_price'] = Mage::helper('core')->jsonEncode($postData['tier_price']);
                 $tierModel
                     ->addData($postData)
@@ -133,5 +138,10 @@ class DT_GroupDeal_Adminhtml_TierController extends Mage_Adminhtml_Controller_Ac
         Mage::getSingleton('adminhtml/session')->addError(Mage::helper('dt_groupdeal')->__('Unable to find tier to save'));
         $this->_redirect('*/*/');
 
+    }
+
+    public function orderAction ()
+    {
+        return 'in Orders';
     }
 }
