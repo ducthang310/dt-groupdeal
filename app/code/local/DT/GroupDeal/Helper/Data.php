@@ -20,7 +20,7 @@ class DT_GroupDeal_Helper_Data extends Mage_Core_Helper_Abstract
         $currentTime = new DateTime(Mage::getModel('core/date')->date('Y-m-d H:i:s'));
         if ($dealToTime < $currentTime) {
             $result['status'] = self::DEAL_STATUS_ENDED;
-        } elseif ($dealFromTime < $currentTime && $currentTime < $dealToTime) {
+        } elseif ($dealFromTime <= $currentTime && $currentTime <= $dealToTime) {
             $result['status'] = self::DEAL_STATUS_RUNNING;
         } else {
             $result['status'] = self::DEAL_STATUS_QUEUEING;
@@ -34,14 +34,14 @@ class DT_GroupDeal_Helper_Data extends Mage_Core_Helper_Abstract
                 return 1;
             }
             // check deal for $product
-            $_col = Mage::getModel('dt_groupdeal/deal')->getCollection();
-            $_col->addFieldToFilter('product_id', $product->getId());
-            $_deal = $_col->getFirstItem();
-            if ($_deal->getId() && $_deal->getIsActive()) {
-                $result = $this->checkDealTime($_deal);
-                if ($result['status'] == self::DEAL_STATUS_RUNNING) {
-                    Mage::register('dt_deal_' . $product->getId(), $_deal);
-                    return 1;
+            if ($product->getDealId()) {
+                $_deal = Mage::getModel('dt_groupdeal/deal')->load($product->getDealId());
+                if ($_deal->getId() && $_deal->getIsActive()) {
+                    $result = $this->checkDealTime($_deal);
+                    if ($result['status'] == self::DEAL_STATUS_RUNNING) {
+                        Mage::register('dt_deal_' . $product->getId(), $_deal);
+                        return 1;
+                    }
                 }
             }
         }

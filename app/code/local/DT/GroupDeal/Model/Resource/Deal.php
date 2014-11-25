@@ -15,51 +15,33 @@ class DT_GroupDeal_Model_Resource_Deal extends Mage_Core_Model_Resource_Db_Abstr
         $this->_init('dt_groupdeal/deal', 'group_deal_id');
     }
 
-//    protected function _afterSave(Mage_Core_Model_Abstract $object)
-//    {
-//        if ($object->getData('tier_price') && !$object->getData('no_update_tier')) {
-//            $this->saveTierPrice($object);
-//        }
-//        return $this;
-//    }
-//
-//    protected function saveTierPrice($object) {
-//        if ($data = $object->getData('tier_price')) {
-//            $query = '';
-//            $insert = 'INSERT INTO `' . $this->getTable('dt_groupdeal/tierprice') . '` (`tier_id`, `group_deal_id`, `tier_qty`, `tier_price`) VALUES';
-//            $count = 0;
-//            foreach ($data as $row) {
-//                if ($row['tier_id'] || !$row['delete']) {
-//                    if (isset($row['delete']) && $row['delete']) {
-//                        // delete
-//                        $query .= "DELETE FROM `" . $this->getTable('dt_groupdeal/tierprice') . "` WHERE `tier_id` = " . $row["tier_id"] . ";";
-//                    } elseif ($row['tier_id']) {
-//                        // update
-//                        $query .= "UPDATE  `" . $this->getTable('dt_groupdeal/tierprice') . "` SET  `tier_qty` =  '" . $row['tier_qty'] . "', `tier_price` =  '" . $row['tier_price'] . "' WHERE  `tier_id` = " . $row["tier_id"] . ";";
-//                    } else {
-//                        // insert
-//                        if ($count == 0) {
-//                            $insert .= " (NULL, '" . $object->getId() . "', '" . $row['tier_qty'] . "', '" . $row['tier_price'] . "')";
-//                        } else {
-//                            $insert .= ", (NULL, '" . $object->getId() . "', '" . $row['tier_qty'] . "', '" . $row['tier_price'] . "')";
-//                        }
-//                        $count++;
-//                    }
-//                }
-//            }
-//            $insert .= ';';
-//            $this->_getWriteAdapter()->query($query . $insert);
-//        }
-//    }
-//
-//    protected function _afterLoad(Mage_Core_Model_Abstract $object)
-//    {
-//        $condition = $this->getReadConnection()->quoteInto('group_deal_id =?', $object->getId());
-//        $select = $this->getReadConnection()->select()
-//            ->from($this->getTable('dt_groupdeal/tierprice'), array('tier_id', 'tier_qty', 'tier_price'))
-//            ->where($condition)
-//            ->order('tier_qty ' . Zend_Db_Select::SQL_ASC);
-//        $object->setData('tier_price', $this->getReadConnection()->fetchAll($select));
-//        return $this;
-//    }
+    /**
+     * Perform actions after object load
+     *
+     * @param Varien_Object $object
+     * @return Mage_Core_Model_Resource_Db_Abstract
+     */
+    protected function _afterLoad(Mage_Core_Model_Abstract $object)
+    {
+        $_dealFromDate = new Zend_Date($object->getDealFromDate(), 'Y-M-d h:m:s', null);
+        $object->setDealFromDate($_dealFromDate->toString('M/d/yy h:mm a'));
+        $_dealToDate = new Zend_Date($object->getDealToDate(), 'Y-M-d h:m:s', null);
+        $object->setDealToDate($_dealToDate->toString('M/d/yy h:mm a'));
+        return $this;
+    }
+
+    /**
+     * Perform actions before object save
+     *
+     * @param Varien_Object $object
+     * @return Mage_Core_Model_Resource_Db_Abstract
+     */
+    protected function _beforeSave(Mage_Core_Model_Abstract $object)
+    {
+        $_dealFromDate = new Zend_Date($object->getDealFromDate(), 'M/d/yy h:mm a', null);
+        $object->setDealFromDate($_dealFromDate->toString('Y-M-d H:m:s'));
+        $_dealToDate = new Zend_Date($object->getDealToDate(), 'M/d/yy h:mm a', null);
+        $object->setDealToDate($_dealToDate->toString('Y-M-d H:m:s'));
+        return parent::_beforeSave($object);
+    }
 }

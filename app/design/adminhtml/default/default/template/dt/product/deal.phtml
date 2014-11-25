@@ -9,11 +9,8 @@ if ($_deal) {
     $_groupDealName = $_deal->getGroupDealName();
     $_isActive = $_deal->getIsActive();
 
-    $_dealFromDate = new Zend_Date($_deal->getDealFromDate(), 'M/d/yy h:mm a', null);
-    $_dealFromDate = $_dealFromDate->toString('M/d/yy h:mm a');
-    $_dealToDate = new Zend_Date($_deal->getDealToDate(), 'M/d/yy h:mm a', null);
-    $_dealToDate = $_dealToDate->toString('M/d/yy h:mm a');
-
+    $_dealFromDate = $_deal->getDealFromDate();
+    $_dealToDate = $_deal->getDealToDate();
     $_dealDescription = $_deal->getDealDescription();
     $_currentPrice = $_deal->getCurrentPrice();
     $_currentQtyOrdered = $_deal->getCurrentQtyOrdered();
