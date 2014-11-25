@@ -1,10 +1,30 @@
+
+<?php
+$_product = $this->getProduct();
+$_deal = $this->getDeal();
+$_tier = $this->getTier();
+$_tierId = $_groupDealName = $_isActive = $_dealFromDate = $_dealToDate = $_dealDescription = null;
+if ($_deal) {
+    $_tierId = $_deal->getTierId();
+    $_groupDealName = $_deal->getGroupDealName();
+    $_isActive = $_deal->getIsActive();
+    $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+    $_dealFromDate = new Zend_Date($_deal->getDealFromDate(), $dateFormatIso);
+    $_dealToDate = new Zend_Date($_deal->getDealToDate(), $dateFormatIso);
+    $_dealDescription = $_deal->getDealDescription();
+    $_currentPrice = $_deal->getCurrentPrice();
+    $_currentQtyOrdered = $_deal->getCurrentQtyOrdered();
+}
+?>
 <div class="entry-edit">
     <div class="entry-edit-head">
         <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Deal Information')?></h4>
     </div>
     <fieldset>
         <legend><?php echo $this->__('Deal Information')?></legend>
-        <input type="hidden" value="" name="deal[tier_id_choosen]" id="tier_id_choosen"/>
+        <input type="hidden" value="<?php echo $_product->getDealId(); ?>" name="deal[deal_id]" id="deal_id"/>
+        <input type="hidden" value="<?php echo $_tierId; ?>" name="deal[info][tier_id]" id="tier_id_choosen"/>
+        <input type="hidden" value="<?php echo $_product->getId(); ?>" name="deal[info][product_id]" id="deal_product_id"/>
         <table cellspacing="0" id="table_groupdeal" class="form-list">
             <tbody>
                 <tr>
@@ -20,38 +40,40 @@
                 <tr class="deal-tier-table deal-hidden" id="deal-tier-table">
                     <td class="label"><label for="deal_tier_price"><?php echo $this->__('Tier Price')?></label></td>
                     <td class="value grid" id="deal-tier-content">
-
+                        <?php if ($_tier): ?>
+                        <?php echo $this->getLayout()->createBlock('dt_groupdeal/adminhtml_catalog_product_edit_tabs_deal_tier')->setTier($tier)->toHtml(); ?>
+                        <?php endif; ?>
                     </td>
                 </tr>
 
                 <tr class=" deal-hidden">
                     <td class="label"><label for="deal_name"><?php echo $this->__('Deal Name')?></label></td>
                     <td class="value">
-                        <input type="text" id="deal_name" name="deal[group_deal_name]" class="input-text"/>
+                        <input type="text" id="deal_name" name="deal[info][group_deal_name]" class="input-text" value="<?php echo $_groupDealName; ?>"/>
                     </td>
                 </tr>
 
                 <tr class=" deal-hidden">
                     <td class="label"><label for="deal_name"><?php echo $this->__('Status')?></label></td>
                     <td class="value">
-                        <select class="select" name="deal[is_active]" id="deal_status">
-                            <option value="0"><?php echo $this->__('Disabled')?></option>
-                            <option selected="selected" value="1"><?php echo $this->__('Enabled')?></option>
+                        <select class="select" name="deal[info][is_active]" id="deal_status">
+                            <option value="0" <?php if (!$_isActive) echo 'selected="selected"'; ?>><?php echo $this->__('Disabled')?></option>
+                            <option value="1" <?php if ($_isActive) echo 'selected="selected"'; ?>><?php echo $this->__('Enabled')?></option>
                         </select>
                     </td>
                 </tr>
 
                 <tr class=" deal-hidden">
-                    <td class="label"><label for="deal_from_date">From Date</label></td>
+                    <td class="label"><label for="deal_from_date"><?php echo $this->__('From Date')?></label></td>
                     <td class="value">
-                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_from_date" name="deal[deal_from_date]">
+                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_from_date" name="deal[info][deal_from_date]" value="<?php echo (string) $_dealFromDate; ?>">
                         <img style="" title="Select Date" id="deal_from_date_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>">
                         <script type="text/javascript">
                             //&lt;![CDATA[
                             Calendar.setup({
                                 inputField: "deal_from_date",
                                 ifFormat: "%m/%e/%Y",
-                                showsTime: false,
+                                showsTime: true,
                                 button: "deal_from_date_trig",
                                 align: "Bl",
                                 singleClick : true
@@ -62,16 +84,16 @@
                 </tr>
 
                 <tr class=" deal-hidden">
-                    <td class="label"><label for="deal_to_date">From Date</label></td>
+                    <td class="label"><label for="deal_to_date"><?php echo $this->__('To Date')?></label></td>
                     <td class="value">
-                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_to_date" name="deal[deal_to_date]">
+                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_to_date" name="deal[info][deal_to_date]" value="<?php echo (string) $_dealToDate; ?>">
                         <img style="" title="Select Date" id="deal_to_date_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>">
                         <script type="text/javascript">
                             //&lt;![CDATA[
                             Calendar.setup({
                                 inputField: "deal_to_date",
                                 ifFormat: "%m/%e/%Y",
-                                showsTime: false,
+                                showsTime: true,
                                 button: "deal_to_date_trig",
                                 align: "Bl",
                                 singleClick : true
@@ -84,23 +106,21 @@
                 <tr class=" deal-hidden">
                     <td class="label"><label for="deal_current_price"><?php echo $this->__('Description')?></label></td>
                     <td class="value">
-                        <textarea cols="15" rows="2" class="textarea" name="deal[deal_description]" id="deal_description">
-
-                        </textarea>
+                        <textarea cols="15" class="textarea" name="deal[info][deal_description]" id="deal_description"><?php echo $_dealDescription; ?></textarea>
                     </td>
                 </tr>
 
                 <tr class=" deal-hidden">
                     <td class="label"><label for="deal_current_price"><?php echo $this->__('Current Price')?></label></td>
                     <td class="value">
-                        <input type="text" id="deal_current_price" name="deal[current_price]" class="input-text" disabled="disabled" value="120"/>
+                        <input type="text" id="deal_current_price" name="deal[current_price]" class="input-text" disabled="disabled" value="<?php echo $_currentPrice; ?>"/>
                     </td>
                 </tr>
 
                 <tr class=" deal-hidden">
                     <td class="label"><label for="deal_current_qty_ordered"><?php echo $this->__('Ordered Quantity')?></label></td>
                     <td class="value">
-                        <input type="text" id="deal_current_qty_ordered" name="deal[current_qty_ordered]" class="input-text" disabled="disabled" value="120"/>
+                        <input type="text" id="deal_current_qty_ordered" name="deal[current_qty_ordered]" class="input-text" disabled="disabled" value="<?php echo $_currentQtyOrdered; ?>"/>
                     </td>
                 </tr>
             </tbody>
@@ -108,10 +128,12 @@
     </fieldset>
 </div>
 <script type="text/javascript">
+    <?php if (!$_product->getDealId()): ?>
     var dealTr = $$('#table_groupdeal .deal-hidden');
     dealTr.each(function(elm) {
         elm.hide();
     });
+    <?php endif; ?>
     function loadTier() {
         var tierId = $('deal_tier_id').value;
         if (tierId == '') {

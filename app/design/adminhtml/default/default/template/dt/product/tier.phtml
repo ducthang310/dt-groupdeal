@@ -10,7 +10,9 @@
     </tr>
     </thead>
     <tbody id="tier_price_container">
+    <?php $count = 0;?>
     <?php foreach ($this->getValues() as $_item): ?>
+        <?php $count++; ?>
         <tr>
             <td class="nobr">
                 <input type="text" id="deal_price_row_<?php echo $count; ?>_qty" value="<?php echo $_item['tier_qty']*1 ?>" name="deal[<?php echo $count; ?>][tier_qty]" class="input-text" /> <small class="nobr">and above</small>

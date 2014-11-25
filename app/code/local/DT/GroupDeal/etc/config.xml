@@ -2,7 +2,7 @@
 <config>
     <modules>
         <DT_GroupDeal>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </DT_GroupDeal>
     </modules>
     <global>
@@ -47,7 +47,7 @@
             <dt_groupdeal_setup>
                 <setup>
                     <module>DT_GroupDeal</module>
-                    <class>Mage_Eav_Model_Entity_Setup</class>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
                 </setup>
             </dt_groupdeal_setup>
         </resources>
@@ -172,6 +172,14 @@
                     </dt_groupdeal>
                 </observers>
             </catalog_product_get_final_price>
+            <catalog_product_save_before>
+                <observers>
+                    <dt_groupdeal_save_deal>
+                        <class>dt_groupdeal/observer</class>
+                        <method>saveDeal</method>
+                    </dt_groupdeal_save_deal>
+                </observers>
+            </catalog_product_save_before>
         </events>
     </adminhtml>
 

@@ -64,7 +64,8 @@ class DT_GroupDeal_Model_Observer
      * @param Varien_Event_Observer $observer
      * @return null
      */
-    public function saveOrderIdForDeal($observer) {
+    public function saveOrderIdForDeal($observer)
+    {
         /** @var $orderInstance Mage_Sales_Model_Order */
         $orderInstance = $observer->getOrder();
         $items = $orderInstance->getAllItems();
@@ -76,12 +77,12 @@ class DT_GroupDeal_Model_Observer
                 $deal = Mage::registry('dt_deal_' . $item->getProduct()->getId());
                 $deal->setData('no_update_tier', true);
                 try {
-                    $deal->setCurrentQtyOrdered((int) $deal->getCurrentQtyOrdered() + (int) $item->getQtyOrdered());
+                    $deal->setCurrentQtyOrdered((int)$deal->getCurrentQtyOrdered() + (int)$item->getQtyOrdered());
                     $tierPrice = $deal->getTierPrice();
                     if (0 < sizeof($tierPrice)) {
                         $currentPrice = $deal->getCurrentPrice();
                         for ($i = 0; $i < sizeof($tierPrice); $i++) {
-                            if ((int) $tierPrice[$i]['tier_qty'] <= (int) $deal->getCurrentQtyOrdered()) {
+                            if ((int)$tierPrice[$i]['tier_qty'] <= (int)$deal->getCurrentQtyOrdered()) {
                                 $currentPrice = $tierPrice[$i]['tier_price'];
                             } else {
                                 break;
@@ -100,6 +101,27 @@ class DT_GroupDeal_Model_Observer
                     Mage::logException($e);
                 }
             }
+        }
+    }
+
+    /**
+     * Create new or edit deal of Products
+     *
+     * @param Varien_Event_Observer $observer
+     * @return null
+     */
+    public function saveDeal($observer)
+    {
+        $data = Mage::app()->getRequest()->getPost('deal');
+        $product = $observer->getEvent()->getProduct();
+        $dealModel = Mage::getModel('dt_groupdeal/deal');
+        if ($product->getDealId()) {
+            $dealModel->load($product->getDealId());
+        }
+        try {
+            $dealModel->setData($data['info'])->save();
+        } catch (Exception $e) {
+            Mage::logException($e);
         }
     }
 }
