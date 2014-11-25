@@ -8,7 +8,8 @@
  */
 class DT_GroupDeal_Block_Catalog_Product_Deal extends Mage_Core_Block_Template
 {
-    protected $_groupDeal;
+    protected $_groupDeal = null;
+    protected $_tierPrice = null;
 
     protected function _construct()
     {
@@ -29,9 +30,13 @@ class DT_GroupDeal_Block_Catalog_Product_Deal extends Mage_Core_Block_Template
     }
 
     public function getTierPrice() {
-        if ($this->_groupDeal) {
-            return $this->_groupDeal->getTierPrice();
+        if (!$this->_tierPrice && $this->_groupDeal && $this->_groupDeal->getTierId()) {
+            $tier = Mage::getModel('dt_groupdeal/tier')->load($this->_groupDeal->getTierId());
+            if ($tier->getId()) {
+                $this->_tierPrice = $tier->getTierPrice();
+            }
         }
+        return $this->_tierPrice;
     }
 
     public function checkInDealTime() {

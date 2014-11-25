@@ -23,7 +23,7 @@ class DT_GroupDeal_Block_Adminhtml_Catalog_Product_Edit_Tabs_Deal_Tier extends M
     {
         if ($this->getTier()) {
             $values = array();
-            $data = Mage::helper('core')->jsonDecode($this->getTier()->getData('tier_price'));
+            $data = $this->getTier()->getData('tier_price');
 
             if (is_array($data)) {
                 $values = $this->_sortValues($data);

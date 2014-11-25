@@ -1,5 +1,5 @@
 
-<?php if ($this->checkInDealTime()): ?>
+<?php if ($this->checkInDealTime() && $this->getTierPrice()): ?>
 <?php
     $_tiers = $this->getTierPrice();
     $_currentPrice = Mage::helper('core')->currency($this->getProduct()->getPrice(),true,false);

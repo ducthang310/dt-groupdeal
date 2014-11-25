@@ -113,8 +113,9 @@ class DT_GroupDeal_Adminhtml_TierController extends Mage_Adminhtml_Controller_Ac
                     if ($tier['delete']) {
                         unset($postData['tier_price'][$k]);
                     }
+                    unset($postData['tier_price'][$k]['delete']);
+                    unset($postData['tier_price'][$k]['tier_id']);
                 }
-                $postData['tier_price'] = Mage::helper('core')->jsonEncode($postData['tier_price']);
                 $tierModel
                     ->addData($postData)
                     ->save();

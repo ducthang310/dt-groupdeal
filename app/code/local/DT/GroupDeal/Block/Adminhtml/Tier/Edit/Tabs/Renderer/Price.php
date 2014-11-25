@@ -86,7 +86,7 @@ class DT_GroupDeal_Block_Adminhtml_Tier_Edit_Tabs_Renderer_Price
     public function getValues()
     {
         $values = array();
-        $data = Mage::helper('core')->jsonDecode($this->getElement()->getValue());
+        $data = $this->getElement()->getValue();
 
         if (is_array($data)) {
             $values = $this->_sortValues($data);
