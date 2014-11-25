@@ -32,4 +32,32 @@ class DT_GroupDeal_Block_Adminhtml_Catalog_Product_Edit_Tabs_Deal_Tier extends M
         }
         return false;
     }
+
+    /**
+     * Sort values
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function _sortValues($data)
+    {
+        usort($data, array($this, '_sortTierPrices'));
+        return $data;
+    }
+
+    /**
+     * Sort tier price values callback method
+     *
+     * @param array $a
+     * @param array $b
+     * @return int
+     */
+    protected function _sortTierPrices($a, $b)
+    {
+        if ($a['tier_qty'] != $b['tier_qty']) {
+            return $a['tier_qty'] < $b['tier_qty'] ? -1 : 1;
+        }
+
+        return 0;
+    }
 }

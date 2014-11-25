@@ -3,35 +3,35 @@
         <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Deal Information')?></h4>
     </div>
     <fieldset>
-
         <legend><?php echo $this->__('Deal Information')?></legend>
+        <input type="hidden" value="" name="deal[tier_id_choosen]" id="tier_id_choosen"/>
         <table cellspacing="0" id="table_groupdeal" class="form-list">
             <tbody>
                 <tr>
                     <td class="label"><label for="deal_tier_id"><?php echo $this->__('Tier Id')?></label></td>
-                    <td class="value">
+                    <td class="value" style="width: 410px !important;">
                         <input type="text" id="deal_tier_id" name="deal[tier_id]" class="required-entry input-text required-entry"/>
-                        <button style="" onclick="" class="scalable save" type="button" title="Save" id="deal_load_tier">
+                        <button style="" onclick="loadTier()" class="scalable save" type="button" title="Save" id="deal_load_tier">
                             <span style="line-height: 0 !important;"><span><span><?php echo $this->__('Load Tier Price')?></span></span></span>
                         </button>
                     </td>
                 </tr>
 
-                <tr class="deal-tier-table" style="">
+                <tr class="deal-tier-table deal-hidden" id="deal-tier-table">
                     <td class="label"><label for="deal_tier_price"><?php echo $this->__('Tier Price')?></label></td>
-                    <td class="value grid">
+                    <td class="value grid" id="deal-tier-content">
 
                     </td>
                 </tr>
 
-                <tr>
+                <tr class=" deal-hidden">
                     <td class="label"><label for="deal_name"><?php echo $this->__('Deal Name')?></label></td>
                     <td class="value">
                         <input type="text" id="deal_name" name="deal[group_deal_name]" class="input-text"/>
                     </td>
                 </tr>
 
-                <tr>
+                <tr class=" deal-hidden">
                     <td class="label"><label for="deal_name"><?php echo $this->__('Status')?></label></td>
                     <td class="value">
                         <select class="select" name="deal[is_active]" id="deal_status">
@@ -41,10 +41,10 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class=" deal-hidden">
                     <td class="label"><label for="deal_from_date">From Date</label></td>
                     <td class="value">
-                        <input type="text" style="width:110px !important;" class=" input-text" value="" id="deal_from_date" name="deal[deal_from_date]">
+                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_from_date" name="deal[deal_from_date]">
                         <img style="" title="Select Date" id="deal_from_date_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>">
                         <script type="text/javascript">
                             //&lt;![CDATA[
@@ -61,10 +61,10 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class=" deal-hidden">
                     <td class="label"><label for="deal_to_date">From Date</label></td>
                     <td class="value">
-                        <input type="text" style="width:110px !important;" class=" input-text" value="" id="deal_to_date" name="deal[deal_to_date]">
+                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_to_date" name="deal[deal_to_date]">
                         <img style="" title="Select Date" id="deal_to_date_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>">
                         <script type="text/javascript">
                             //&lt;![CDATA[
@@ -81,7 +81,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class=" deal-hidden">
                     <td class="label"><label for="deal_current_price"><?php echo $this->__('Description')?></label></td>
                     <td class="value">
                         <textarea cols="15" rows="2" class="textarea" name="deal[deal_description]" id="deal_description">
@@ -90,14 +90,14 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class=" deal-hidden">
                     <td class="label"><label for="deal_current_price"><?php echo $this->__('Current Price')?></label></td>
                     <td class="value">
                         <input type="text" id="deal_current_price" name="deal[current_price]" class="input-text" disabled="disabled" value="120"/>
                     </td>
                 </tr>
 
-                <tr>
+                <tr class=" deal-hidden">
                     <td class="label"><label for="deal_current_qty_ordered"><?php echo $this->__('Ordered Quantity')?></label></td>
                     <td class="value">
                         <input type="text" id="deal_current_qty_ordered" name="deal[current_qty_ordered]" class="input-text" disabled="disabled" value="120"/>
@@ -107,3 +107,41 @@
         </table>
     </fieldset>
 </div>
+<script type="text/javascript">
+    var dealTr = $$('#table_groupdeal .deal-hidden');
+    dealTr.each(function(elm) {
+        elm.hide();
+    });
+    function loadTier() {
+        var tierId = $('deal_tier_id').value;
+        if (tierId == '') {
+            alert('You must input an ID');
+        } else {
+            new Ajax.Request(
+                    '<?php echo $this->getUrl("*/tier/tier") ?>',
+                    {
+                        method:'POST',
+                        parameters:{tier_id: tierId},
+                        onSuccess:function (transport) {
+                            if (transport.responseText.isJSON()) {
+                                response = transport.responseText.evalJSON();console.log(response);
+                                if (response.error) {
+                                    alert(response.message);
+                                } else {
+                                    $('tier_id_choosen').value = tierId;
+                                    if ($('deal-tier-content')) {
+                                        $('deal-tier-content').innerHTML = response.tier;
+                                        $('deal-tier-table').show();
+                                    }
+                                    dealTr.each(function(elm) {
+                                        elm.show();
+                                    });
+                                }
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+</script>

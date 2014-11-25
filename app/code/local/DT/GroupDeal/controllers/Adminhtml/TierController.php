@@ -146,14 +146,23 @@ class DT_GroupDeal_Adminhtml_TierController extends Mage_Adminhtml_Controller_Ac
     }
 
     public function tierAction () {
-        if ($this->getRequest()->getParam('id', false)) {
+        if ($this->getRequest()->getPost('tier_id', false)) {
             $result = array();
-            $tier = Mage::getModel('dt_groupdeal/tier')->load($this->getRequest()->getParam('id'));
-            $tierBlock = $this->getLayout()->createBlock('dt_groupdeal/adminhtml_catalog_product_edit_tabs_deal_tier')->setTier($tier);
-            $result['tier'] = $tierBlock->toHtml();
-            $result['error'] = false;
+            $tier = Mage::getModel('dt_groupdeal/tier')->load($this->getRequest()->getPost('tier_id'));
+            if ($tier->getId()) {
+                $tierBlock = $this->getLayout()->createBlock('dt_groupdeal/adminhtml_catalog_product_edit_tabs_deal_tier')->setTier($tier);
+                $result['tier'] = $tierBlock->toHtml();
+                $result['error'] = false;
+            } else {
+                $result['error'] = true;
+                $result['message'] = 'Unable to find tier to load';
+            }
+
             $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+        } else {
+            $result['error'] = true;
+            $result['message'] = 'You must input an ID';
+            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array('error' => true)));
         }
-        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array('error' => true)));
     }
 }
