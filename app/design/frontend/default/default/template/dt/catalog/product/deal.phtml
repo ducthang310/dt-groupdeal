@@ -27,4 +27,12 @@
         <?php endforeach; ?>
     </ul>
 </div>
+<script type="text/javascript">
+    //<![CDATA[
+    document.observe("dom:loaded", addParamDeal);
+    function addParamDeal() {
+        productAddToCartForm.form.action = productAddToCartForm.form.action + 'is_deal/1/';
+    }
+    //]]>
+</script>
 <?php endif; ?>
