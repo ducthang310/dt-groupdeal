@@ -123,6 +123,9 @@ class DT_GroupDeal_Model_Observer
         if ($product->getDealId()) {
             $dealModel->load($product->getDealId());
         }
+        if (! (int) $dealModel->getCurrentPrice()){
+            $data['info']['current_price'] = $product->getPrice();
+        }
         try {
             $dealModel->addData($data['info']);
             $dealModel->save();
