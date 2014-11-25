@@ -1,13 +1,61 @@
 
 <?php if ($this->checkInDealTime() && $this->getTierPrice()): ?>
 <?php
+    $_product = $this->getProduct();
     $_tiers = $this->getTierPrice();
-    $_currentPrice = Mage::helper('core')->currency($this->getProduct()->getPrice(),true,false);
-    $_currentQuantity = 10;
+    $_deal = $this->getDeal();
+
+    $_regularPrice = Mage::helper('core')->currency($this->getProduct()->getPrice(),true,false);
+    $_currentPrice = Mage::helper('core')->currency($_deal->getCurrentPrice());
+    $_currentQuantity = (int) $_deal->getCurrentQtyOrdered();
+    $_percentDiscount = round(((float) $this->getProduct()->getPrice() - (float) $_deal->getCurrentPrice()) / (float) $this->getProduct()->getPrice() * 100, 2);
     ?>
 <div class="product-pricing dt-deal-tier">
+    <div class="product-pricing product-deal-top">
+        <div class="deal-top-price">
+            <span class="deal-top-price-regular"><?php echo $this->__('UVP %s', $_regularPrice); ?></span>
+            <span class="deal-top-price-current"><?php echo $_currentPrice; ?></span>
+        </div>
+        <div class="deal-top-percent">
+            <span><?php echo $_percentDiscount . '%'; ?></span>
+            <span><?php echo $this->__('Bereits gespart'); ?></span>
+        </div>
+        <div class="deal-top-addtocart"></div>
+    </div>
+
+    <div class="product-pricing product-deal-mid">
+        <span class="deal-mid-regular"><?php echo $_regularPrice; ?></span>
+        <ul>
+            <?php $_flag = true; ?>
+            <?php foreach ($_tiers as $_tier): ?>
+
+            <li>
+                <span><?php echo 'level'; ?></span>
+                <?php if ($_flag && $_deal->getCurrentQtyOrdered() < $_tier['tier_qty']): ?>
+                <?php $_flag = false; $_nextPrice = $_tier['tier_price']; $_nextQty = (int) $_tier['tier_qty']; ?>
+                <span class="deal-mid-nextlevel"><?php echo $_nextPrice; ?></span>
+                <?php endif; ?>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        <span class="deal-mid-last"><?php echo $_tier['tier_price']?></span>
+    </div>
+
+    <div class="product-pricing product-deal-bot">
+        <div class="deal-bot-countdown"></div>
+        <div class="deal-bot-info">
+            <?php
+            $_stockQty = (int) $_product->getStockItem()->getQty();
+            $_qty = ($_currentQuantity < $_stockQty) ? ($_stockQty - $_currentQuantity) : 0;
+            ?>
+            <p><?php echo $this->__('Noch %s Balle Verfugbar!', $_qty)?></p>
+            <p><?php echo $this->__('Nur noch %s Balle bis zur nachsten Rabattstufe', ($_nextQty - $_currentQuantity))?></p>
+        </div>
+    </div>
+
+
     <div class="dt-deal-title">
-        <span class="dt-span-left"><?php echo $this->__('Current Price')?></span>
+        <span class="dt-span-left"><?php echo $this->__('Regular Price')?></span>
         <span class="dt-span-right"><?php echo $_currentPrice?></span>
         <div class="clearer"></div>
         <span class="dt-span-left"><?php echo $this->__('Current Quantity')?></span>

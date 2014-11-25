@@ -19,6 +19,7 @@ class DT_GroupDeal_Block_Catalog_Product_Deal extends Mage_Core_Block_Template
         }
 
     }
+
     /**
      * Retrieve current product model
      *
@@ -27,6 +28,10 @@ class DT_GroupDeal_Block_Catalog_Product_Deal extends Mage_Core_Block_Template
     public function getProduct()
     {
         return Mage::registry('product');
+    }
+
+    public function getDeal() {
+        return $this->_groupDeal;
     }
 
     public function getTierPrice() {
