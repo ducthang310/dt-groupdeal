@@ -141,9 +141,18 @@ class DT_GroupDeal_Adminhtml_TierController extends Mage_Adminhtml_Controller_Ac
 
     }
 
-    public function orderAction ()
+    /**
+     * Deal orders grid
+     *
+     */
+    public function ordersAction()
     {
-        return 'in Orders';
+        $productID = (int)$this->getRequest()->getParam('id');
+        $product = Mage::getModel('catalog/product')->load($productID);
+        $deal = Mage::getModel('dt_groupdeal/deal')->load($product->getDealId());
+        Mage::register('current_deal', $deal);
+        $this->loadLayout();
+        $this->renderLayout();
     }
 
     public function tierAction () {

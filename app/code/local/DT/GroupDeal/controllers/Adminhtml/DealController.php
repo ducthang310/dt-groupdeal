@@ -244,7 +244,7 @@ class DT_GroupDeal_Adminhtml_DealController extends Mage_Adminhtml_Controller_ac
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('dt_groupdeal')->__('Order #' . $orderExchange->getIncrementId() . ' has been created from #') . $order->getIncrementId());
             }
         }
-        $this->_redirect('*/*/edit', array('id' => $dataParams['deal_id']));
+        $this->_redirect('*/catalog_product/edit', array('id' => $dataParams['product_id']));
     }
 
     public function sendMailAction()

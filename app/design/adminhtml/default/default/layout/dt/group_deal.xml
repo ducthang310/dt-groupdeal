@@ -17,11 +17,11 @@
         </reference>
     </adminhtml_tier_edit>
 
-    <adminhtml_deal_orders>
+    <adminhtml_tier_orders>
         <block type="core/text_list" name="root" output="toHtml">
-            <block type="dt_groupdeal/adminhtml_deal_edit_tabs_orders" name="dt_groupdeal.deal.edit.tab.orders"/>
+            <block type="dt_groupdeal/adminhtml_tier_edit_tabs_orders" name="dt_groupdeal.deal.edit.tab.orders"/>
         </block>
-    </adminhtml_deal_orders>
+    </adminhtml_tier_orders>
 
     <adminhtml_sales_order_view>
         <reference name="head">
