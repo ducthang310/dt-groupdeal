@@ -119,7 +119,11 @@ class DT_GroupDeal_Model_Observer
             $dealModel->load($product->getDealId());
         }
         try {
-            $dealModel->setData($data['info'])->save();
+            $dealModel->addData($data['info']);
+            $dealModel->save();
+            if (!$product->getDealId()) {
+                $product->setDealId($dealModel->getId());
+            }
         } catch (Exception $e) {
             Mage::logException($e);
         }

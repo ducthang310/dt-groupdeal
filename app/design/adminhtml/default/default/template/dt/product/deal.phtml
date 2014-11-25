@@ -33,7 +33,7 @@ if ($_deal) {
                 <tr>
                     <td class="label"><label for="deal_tier_id"><?php echo $this->__('Tier Id')?></label></td>
                     <td class="value" style="width: 410px !important;">
-                        <input type="text" id="deal_tier_id" name="deal[tier_id]" class="required-entry input-text required-entry"/>
+                        <input type="text" id="deal_tier_id" name="deal[tier_id]" class="input-text" value="<?php echo $_tierId; ?>"/>
                         <button style="" onclick="loadTier()" class="scalable save" type="button" title="Save" id="deal_load_tier">
                             <span style="line-height: 0 !important;"><span><span><?php echo $this->__('Load Tier Price')?></span></span></span>
                         </button>
@@ -44,7 +44,7 @@ if ($_deal) {
                     <td class="label"><label for="deal_tier_price"><?php echo $this->__('Tier Price')?></label></td>
                     <td class="value grid" id="deal-tier-content">
                         <?php if ($_tier): ?>
-                        <?php echo $this->getLayout()->createBlock('dt_groupdeal/adminhtml_catalog_product_edit_tabs_deal_tier')->setTier($tier)->toHtml(); ?>
+                        <?php echo $this->getLayout()->createBlock('dt_groupdeal/adminhtml_catalog_product_edit_tabs_deal_tier')->setTier($_tier)->toHtml(); ?>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -131,8 +131,7 @@ if ($_deal) {
     </fieldset>
 </div>
 <script type="text/javascript">
-<?php //if (!$_product->getDealId()): ?>
-    <?php if (false): ?>
+    <?php if (!$_product->getDealId()): ?>
     var dealTr = $$('#table_groupdeal .deal-hidden');
     dealTr.each(function(elm) {
         elm.hide();
