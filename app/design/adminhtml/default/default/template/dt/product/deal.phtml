@@ -8,9 +8,12 @@ if ($_deal) {
     $_tierId = $_deal->getTierId();
     $_groupDealName = $_deal->getGroupDealName();
     $_isActive = $_deal->getIsActive();
-    $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
-    $_dealFromDate = new Zend_Date($_deal->getDealFromDate(), $dateFormatIso);
-    $_dealToDate = new Zend_Date($_deal->getDealToDate(), $dateFormatIso);
+
+    $_dealFromDate = new Zend_Date($_deal->getDealFromDate(), 'M/d/yy h:mm a', null);
+    $_dealFromDate = $_dealFromDate->toString('M/d/yy h:mm a');
+    $_dealToDate = new Zend_Date($_deal->getDealToDate(), 'M/d/yy h:mm a', null);
+    $_dealToDate = $_dealToDate->toString('M/d/yy h:mm a');
+
     $_dealDescription = $_deal->getDealDescription();
     $_currentPrice = $_deal->getCurrentPrice();
     $_currentQtyOrdered = $_deal->getCurrentQtyOrdered();
@@ -66,13 +69,13 @@ if ($_deal) {
                 <tr class=" deal-hidden">
                     <td class="label"><label for="deal_from_date"><?php echo $this->__('From Date')?></label></td>
                     <td class="value">
-                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_from_date" name="deal[info][deal_from_date]" value="<?php echo (string) $_dealFromDate; ?>">
+                        <input type="text" style="width:110px !important;" class="input-text" id="deal_from_date" name="deal[info][deal_from_date]" value="<?php echo $_dealFromDate; ?>">
                         <img style="" title="Select Date" id="deal_from_date_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>">
                         <script type="text/javascript">
                             //&lt;![CDATA[
                             Calendar.setup({
                                 inputField: "deal_from_date",
-                                ifFormat: "%m/%e/%Y",
+                                ifFormat: "%m/%e/%Y %I:%M %p",
                                 showsTime: true,
                                 button: "deal_from_date_trig",
                                 align: "Bl",
@@ -86,13 +89,13 @@ if ($_deal) {
                 <tr class=" deal-hidden">
                     <td class="label"><label for="deal_to_date"><?php echo $this->__('To Date')?></label></td>
                     <td class="value">
-                        <input type="text" style="width:110px !important;" class="input-text" value="" id="deal_to_date" name="deal[info][deal_to_date]" value="<?php echo (string) $_dealToDate; ?>">
+                        <input type="text" style="width:110px !important;" class="input-text" id="deal_to_date" name="deal[info][deal_to_date]" value="<?php echo $_dealToDate; ?>">
                         <img style="" title="Select Date" id="deal_to_date_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>">
                         <script type="text/javascript">
                             //&lt;![CDATA[
                             Calendar.setup({
                                 inputField: "deal_to_date",
-                                ifFormat: "%m/%e/%Y",
+                                ifFormat: "%m/%e/%Y %I:%M %p",
                                 showsTime: true,
                                 button: "deal_to_date_trig",
                                 align: "Bl",
@@ -128,7 +131,8 @@ if ($_deal) {
     </fieldset>
 </div>
 <script type="text/javascript">
-    <?php if (!$_product->getDealId()): ?>
+<?php //if (!$_product->getDealId()): ?>
+    <?php if (false): ?>
     var dealTr = $$('#table_groupdeal .deal-hidden');
     dealTr.each(function(elm) {
         elm.hide();
